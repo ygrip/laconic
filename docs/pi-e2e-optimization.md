@@ -4,13 +4,13 @@
 
 The core is **1,316 bytes**, down from **4,328** (**69.6% smaller**). It preserves outcome-first reporting, conditions and context, verification, failure visibility, and exact code/data. It now explicitly avoids redundant skill reads, routine narration, unnecessary inventories, and noisy test output. Detailed guidance remains lazy-loaded in `references/tool-output.md`.
 
-The repository and installed `~/.agents/skills/laconic/SKILL.md` use the exact tested [compact snapshot](../benchmarks/pi-e2e/results/compact/SKILL.md). Reload Pi skills before using the new version.
+The selected compact revision is the repository's root `SKILL.md`. Reload Pi skills after updating an installation.
 
 ## What we tested
 
 We retained the original experiment and ran **two additional revisions**, each against a fresh no-skill baseline: **18 actual Pi sessions total**, three pairs per revision. All used the original task, fixture, model (`openai-codex/gpt-6-sol`), Pi 1.1.0, medium thinking, isolation, and acceptance checks. Runs alternated arm order.
 
-These are exploratory revisions tuned after seeing results on the same task, not held-out validation. Each revision has its own matched baseline. Cross-revision numbers show observed differences, not causal proof. [Full methodology](../benchmarks/pi-e2e/README.md).
+These are exploratory revisions tuned after seeing results on the same task, not held-out validation. Each revision has its own matched baseline. Cross-revision numbers show observed differences, not causal proof. Only aggregate/paired summaries are published; execution scripts and raw sessions remain local.
 
 | Revision | Skill bytes | Prose words | Output tokens | Gross tool bytes | Total tokens | Pi estimated cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -63,7 +63,7 @@ For example, compact pair 3 states:
 
 > Fixed `usage_summary.py`: it now counts only completed assistant `message_end` records with an allowed stop reason, including those without usage.
 
-It goes on to explain token accounting, report six passing tests and the exact CLI result, and preserve the live-provider limitation. [Actual compact output](../benchmarks/pi-e2e/results/compact/pair-3/laconic/final.md) and [matched baseline](../benchmarks/pi-e2e/results/compact/pair-3/baseline/final.md).
+It goes on to explain token accounting, report six passing tests and the exact CLI result, and preserve the live-provider limitation. Complete session outputs are intentionally not published.
 
 **Test-preservation limitation:** compact pair 1 rewrote the test suite to three tests despite the instruction to preserve tests. Its grouped regressions and independent acceptance checks passed, but that does not prove all prior tests were preserved. The skill is guidance, not enforcement. No result is awarded correctness merely for being short; the independent nine checks remain separate.
 
@@ -75,13 +75,12 @@ A short task with little irrelevant output leaves limited room to offset added i
 
 A skill cannot enforce caps, prevent rereading, or guarantee shorter trajectories. We did not add a limiting extension, skip tests, hide failures, change the benchmark task, or discard unfavorable runs. No dollar-billing claim is made from Pi's estimates.
 
-## Evidence and reproduction
+## Retained summaries
 
-- [Original report](pi-e2e-comparison.md) and [original evidence](../benchmarks/pi-e2e/results/initial/).
-- [Compact evidence](../benchmarks/pi-e2e/results/compact/), [manifest](../benchmarks/pi-e2e/results/compact/manifest.json), and [computed summary](../benchmarks/pi-e2e/results/compact/summary.json).
-- [Rejected batching evidence](../benchmarks/pi-e2e/results/batched/), [manifest](../benchmarks/pi-e2e/results/batched/manifest.json), and [computed summary](../benchmarks/pi-e2e/results/batched/summary.json).
-- [Runner and reproduction commands](../benchmarks/pi-e2e/README.md).
+- [Original report](pi-e2e-comparison.md) and [original aggregate/paired summary](benchmark-summaries/initial.json).
+- [Compact summary](benchmark-summaries/compact.json).
+- [Rejected batching summary](benchmark-summaries/batched.json).
 
-Every directory contains the tested core snapshot, actual completed-message transcripts, final answers, solutions, and verification logs. References were not read by agents in these runs. The core snapshots reproduce what the benchmark actually loaded; optional reference changes are not part of the measured treatment. Transcripts are sanitized as documented, not invented or prose-rewritten.
+Scripts, transcripts, generated solutions and logs remain local and are intentionally excluded from Git. References were not read by agents in these runs. These summaries retain the measured favorable and unfavorable outcomes but do not provide independently replayable transcript evidence.
 
 **Next validation should use fresh, longer tool-heavy tasks and blinded scoring.** Until then, describe this revision as a smaller, clearer-output skill with lower measured estimated cost—not a proven net token-saving solution.

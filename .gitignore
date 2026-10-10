@@ -17,6 +17,9 @@ build/
 .env.*
 !.env.example
 
+# Benchmark execution is local-only; publish summaries under docs/benchmark-summaries.
+/benchmarks/
+
 # Python tooling (if used to maintain assets)
 __pycache__/
 .venv/

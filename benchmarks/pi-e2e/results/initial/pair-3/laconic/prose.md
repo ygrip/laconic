@@ -1,3 +1,0 @@
-Fixed `usage_summary.py` to count only completed assistant `message_end` records with stop reasons `stop`, `toolUse`, or `length`. The cause was that it counted other assistant events, added reasoning to output again, and trusted the supplied `totalTokens`. It now sums the four usage fields and computes the total from them; missing usage counts as zero.
-
-All 5 tests pass. The CLI returned `{"calls": 2, "input": 150, "output": 35, "cacheRead": 50, "cacheWrite": 10, "totalTokens": 245}` for `session.jsonl`. Verification is limited to tests and this fixture; no live-provider or production verification was performed.

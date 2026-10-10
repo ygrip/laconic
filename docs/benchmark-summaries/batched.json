@@ -1,0 +1,264 @@
+{
+  "arms": {
+    "baseline": {
+      "final_words": {
+        "sum": 308,
+        "mean": 102.66666666666667,
+        "median": 104
+      },
+      "prose_words": {
+        "sum": 308,
+        "mean": 102.66666666666667,
+        "median": 104
+      },
+      "output": {
+        "sum": 4929,
+        "mean": 1643,
+        "median": 1633
+      },
+      "input": {
+        "sum": 23324,
+        "mean": 7774.666666666667,
+        "median": 8952
+      },
+      "cacheRead": {
+        "sum": 32128,
+        "mean": 10709.333333333334,
+        "median": 10880
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 60381,
+        "mean": 20127,
+        "median": 19784
+      },
+      "input_context_tokens": {
+        "sum": 55452,
+        "mean": 18484,
+        "median": 18072
+      },
+      "tool_calls": {
+        "sum": 29,
+        "mean": 9.666666666666666,
+        "median": 10
+      },
+      "tool_result_text_bytes": {
+        "sum": 16248,
+        "mean": 5416,
+        "median": 5342
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 16248,
+        "mean": 5416,
+        "median": 5342
+      },
+      "model_calls": {
+        "sum": 18,
+        "mean": 6,
+        "median": 6
+      },
+      "estimated_cost_usd": {
+        "sum": 0.1023636,
+        "mean": 0.034121200000000004,
+        "median": 0.0359492
+      },
+      "elapsed_seconds": {
+        "sum": 121.572,
+        "mean": 40.524,
+        "median": 40.888
+      },
+      "verified": true
+    },
+    "laconic": {
+      "final_words": {
+        "sum": 265,
+        "mean": 88.33333333333333,
+        "median": 89
+      },
+      "prose_words": {
+        "sum": 265,
+        "mean": 88.33333333333333,
+        "median": 89
+      },
+      "output": {
+        "sum": 5140,
+        "mean": 1713.3333333333333,
+        "median": 1480
+      },
+      "input": {
+        "sum": 19255,
+        "mean": 6418.333333333333,
+        "median": 5552
+      },
+      "cacheRead": {
+        "sum": 57088,
+        "mean": 19029.333333333332,
+        "median": 19968
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 81483,
+        "mean": 27161,
+        "median": 26811
+      },
+      "input_context_tokens": {
+        "sum": 76343,
+        "mean": 25447.666666666668,
+        "median": 25331
+      },
+      "tool_calls": {
+        "sum": 35,
+        "mean": 11.666666666666666,
+        "median": 11
+      },
+      "tool_result_text_bytes": {
+        "sum": 15063,
+        "mean": 5021,
+        "median": 4916
+      },
+      "skill_read_bytes": {
+        "sum": 1255,
+        "mean": 418.3333333333333,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 1,
+        "mean": 0.3333333333333333,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 13808,
+        "mean": 4602.666666666667,
+        "median": 4649
+      },
+      "model_calls": {
+        "sum": 21,
+        "mean": 7,
+        "median": 7
+      },
+      "estimated_cost_usd": {
+        "sum": 0.1013276,
+        "mean": 0.03377586666666667,
+        "median": 0.0295196
+      },
+      "elapsed_seconds": {
+        "sum": 138.71,
+        "mean": 46.236666666666665,
+        "median": 54.604
+      },
+      "verified": true
+    }
+  },
+  "aggregate_savings_percent": {
+    "final_words": 13.961,
+    "prose_words": 13.961,
+    "output": -4.281,
+    "input": 17.446,
+    "cacheRead": -77.689,
+    "cacheWrite": null,
+    "total_tokens": -34.948,
+    "input_context_tokens": -37.674,
+    "tool_calls": -20.69,
+    "tool_result_text_bytes": 7.293,
+    "skill_read_bytes": null,
+    "skill_read_calls": null,
+    "task_tool_result_text_bytes": 15.017,
+    "model_calls": -16.667,
+    "estimated_cost_usd": 1.012,
+    "elapsed_seconds": -14.097
+  },
+  "paired": [
+    {
+      "pair": 1,
+      "savings_percent": {
+        "final_words": 9.184,
+        "prose_words": 9.184,
+        "output": 13.551,
+        "input": 0.685,
+        "cacheRead": -57.576,
+        "cacheWrite": null,
+        "total_tokens": -35.519,
+        "input_context_tokens": -40.167,
+        "tool_calls": -10.0,
+        "tool_result_text_bytes": 7.975,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 31.468,
+        "model_calls": -16.667,
+        "estimated_cost_usd": 3.07,
+        "elapsed_seconds": -22.189
+      }
+    },
+    {
+      "pair": 2,
+      "savings_percent": {
+        "final_words": 4.808,
+        "prose_words": 4.808,
+        "output": -38.573,
+        "input": 7.044,
+        "cacheRead": -105.882,
+        "cacheWrite": null,
+        "total_tokens": -53.643,
+        "input_context_tokens": -54.846,
+        "tool_calls": -40.0,
+        "tool_result_text_bytes": 16.735,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 16.735,
+        "model_calls": -33.333,
+        "estimated_cost_usd": -19.883,
+        "elapsed_seconds": -33.545
+      }
+    },
+    {
+      "pair": 3,
+      "savings_percent": {
+        "final_words": 27.358,
+        "prose_words": 27.358,
+        "output": 10.288,
+        "input": 37.98,
+        "cacheRead": -71.642,
+        "cacheWrite": null,
+        "total_tokens": -13.444,
+        "input_context_tokens": -15.655,
+        "tool_calls": -11.111,
+        "tool_result_text_bytes": -8.041,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -8.041,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 20.171,
+        "elapsed_seconds": 21.268
+      }
+    }
+  ],
+  "definitions": {
+    "savings": "100 * (baseline sum - laconic sum) / baseline sum; negative means increase",
+    "total_tokens": "input + output + cacheRead + cacheWrite summed once per completed assistant message; reasoning is already output",
+    "estimated_cost_usd": "sum of Pi usage.cost.total metadata; catalog-based estimate, not billed/subscription cost",
+    "input_context": "input + cacheRead + cacheWrite; repeated context counted as the provider reports it",
+    "words": "regex word count; prose includes all assistant text, not reasoning/code tool arguments",
+    "tool_bytes": "UTF-8 text content bytes; excludes envelopes, images and tool-call arguments; not token counts",
+    "tool_efficiency": "independent acceptance checks passed / tool-result bytes * 1000; meaningful only for this identical task",
+    "artifact_policy": "non-streaming message_end events; reasoning/signatures omitted, temporary paths replaced"
+  },
+  "publication": "Summary only. Benchmark scripts, raw sessions, generated solutions and logs are intentionally not tracked."
+}

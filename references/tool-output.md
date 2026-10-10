@@ -67,3 +67,7 @@ If running Pi, a `tool_result` extension can cap model-facing tool text *before*
 - Keep error flags and exit status intact.
 - Be aware that re-reading truncated output can negate token savings.
 - This skill can guide tool calls, but cannot enforce hard caps on its own. The Pi extension is optional and installed separately.
+
+### Laconic native runtime (experimental)
+
+In addition to the independent `pi-output-limits` extension above, this repository contains a harness-neutral [native runtime](../docs/native-runtime.md) with a small deterministic engine, native Pi/Claude adapters, observation-only Codex integration, and an MCP stdio gateway. OpenCode uses the gateway; native installation is unavailable for the checked V2 API. It shortens only supported model-visible tool results when full recovery is available. No generic Codex tool-result replacement is claimed. Unlike `SKILL.md`, enabling runtime hooks executes local code with your user permissions and requires an explicit `laconic setup` command. Check the runtime guide for installed paths, privacy risks, and current validation limits.
