@@ -1,0 +1,1369 @@
+{
+  "runs": [
+    {
+      "pair": 1,
+      "arm": "baseline",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:37:04.693911+00:00",
+      "elapsed_seconds": 31.238,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 7,
+      "input": 5849,
+      "output": 1719,
+      "cacheRead": 18304,
+      "cacheWrite": 0,
+      "total_tokens": 25872,
+      "reported_total_tokens": 25872,
+      "reasoning_tokens": 87,
+      "final_words": 98,
+      "prose_words": 98,
+      "final_characters": 720,
+      "tool_calls": 10,
+      "tool_result_text_bytes": 6714,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 1,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0325488,
+      "input_context_tokens": 24153,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 6714,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 3680,
+          "errors": 1
+        },
+        "edit": {
+          "calls": 3,
+          "text_bytes": 169,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.34
+    },
+    {
+      "pair": 1,
+      "arm": "both",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:38:30.446237+00:00",
+      "elapsed_seconds": 27.403,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 8295,
+      "output": 1389,
+      "cacheRead": 12160,
+      "cacheWrite": 0,
+      "total_tokens": 21844,
+      "reported_total_tokens": 21844,
+      "reasoning_tokens": 105,
+      "final_words": 76,
+      "prose_words": 76,
+      "final_characters": 549,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 3761,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 1,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.032912000000000004,
+      "input_context_tokens": 20455,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 3761,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 974,
+          "errors": 1
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 2.393
+    },
+    {
+      "pair": 1,
+      "arm": "laconic",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:37:36.278366+00:00",
+      "elapsed_seconds": 26.368,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 9545,
+      "output": 1518,
+      "cacheRead": 10368,
+      "cacheWrite": 0,
+      "total_tokens": 21431,
+      "reported_total_tokens": 21431,
+      "reasoning_tokens": 116,
+      "final_words": 79,
+      "prose_words": 79,
+      "final_characters": 560,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 3536,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 0,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.036343600000000004,
+      "input_context_tokens": 19913,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 3536,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 749,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 2.545
+    },
+    {
+      "pair": 1,
+      "arm": "runtime",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:38:02.969022+00:00",
+      "elapsed_seconds": 27.132,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 4901,
+      "output": 1422,
+      "cacheRead": 12288,
+      "cacheWrite": 0,
+      "total_tokens": 18611,
+      "reported_total_tokens": 18611,
+      "reasoning_tokens": 66,
+      "final_words": 96,
+      "prose_words": 96,
+      "final_characters": 730,
+      "tool_calls": 8,
+      "tool_result_text_bytes": 4382,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 0,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0264796,
+      "input_context_tokens": 17189,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 4382,
+      "by_tool_sanitized": {
+        "bash": {
+          "calls": 3,
+          "text_bytes": 1595,
+          "errors": 0
+        },
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 2.054
+    },
+    {
+      "pair": 2,
+      "arm": "baseline",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:40:41.265901+00:00",
+      "elapsed_seconds": 26.158,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 5572,
+      "output": 1614,
+      "cacheRead": 14336,
+      "cacheWrite": 0,
+      "total_tokens": 21522,
+      "reported_total_tokens": 21522,
+      "reasoning_tokens": 144,
+      "final_words": 96,
+      "prose_words": 96,
+      "final_characters": 714,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 5999,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 0,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.030151200000000003,
+      "input_context_tokens": 19908,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 5999,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 3212,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.5
+    },
+    {
+      "pair": 2,
+      "arm": "both",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:38:58.166121+00:00",
+      "elapsed_seconds": 31.201,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 9891,
+      "output": 1464,
+      "cacheRead": 13824,
+      "cacheWrite": 0,
+      "total_tokens": 25179,
+      "reported_total_tokens": 25179,
+      "reasoning_tokens": 120,
+      "final_words": 84,
+      "prose_words": 84,
+      "final_characters": 587,
+      "tool_calls": 10,
+      "tool_result_text_bytes": 7064,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 1,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.037186800000000006,
+      "input_context_tokens": 23715,
+      "skill_read_bytes": 1316,
+      "skill_read_calls": 1,
+      "task_tool_result_text_bytes": 5748,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 4,
+          "text_bytes": 3992,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 2709,
+          "errors": 1
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 1,
+      "acceptance_checks_per_1000_tool_bytes": 1.274
+    },
+    {
+      "pair": 2,
+      "arm": "laconic",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:40:13.991382+00:00",
+      "elapsed_seconds": 26.936,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 5237,
+      "output": 1423,
+      "cacheRead": 14592,
+      "cacheWrite": 0,
+      "total_tokens": 21252,
+      "reported_total_tokens": 21252,
+      "reasoning_tokens": 124,
+      "final_words": 82,
+      "prose_words": 82,
+      "final_characters": 539,
+      "tool_calls": 8,
+      "tool_result_text_bytes": 3525,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 0,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0276224,
+      "input_context_tokens": 19829,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 3525,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 3,
+          "text_bytes": 738,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 2.553
+    },
+    {
+      "pair": 2,
+      "arm": "runtime",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:39:29.678458+00:00",
+      "elapsed_seconds": 43.947,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 5212,
+      "output": 1712,
+      "cacheRead": 13056,
+      "cacheWrite": 0,
+      "total_tokens": 19980,
+      "reported_total_tokens": 19980,
+      "reasoning_tokens": 129,
+      "final_words": 102,
+      "prose_words": 102,
+      "final_characters": 744,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 4352,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 0,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0301552,
+      "input_context_tokens": 18268,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 4352,
+      "by_tool_sanitized": {
+        "bash": {
+          "calls": 4,
+          "text_bytes": 1565,
+          "errors": 0
+        },
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 2.068
+    },
+    {
+      "pair": 3,
+      "arm": "baseline",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:41:07.794613+00:00",
+      "elapsed_seconds": 26.211,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 8470,
+      "output": 1560,
+      "cacheRead": 11136,
+      "cacheWrite": 0,
+      "total_tokens": 21166,
+      "reported_total_tokens": 21166,
+      "reasoning_tokens": 130,
+      "final_words": 99,
+      "prose_words": 99,
+      "final_characters": 744,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 6701,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 1,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0347672,
+      "input_context_tokens": 19606,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 6701,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 3725,
+          "errors": 1
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.343
+    },
+    {
+      "pair": 3,
+      "arm": "both",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:42:46.313494+00:00",
+      "elapsed_seconds": 43.714,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 8835,
+      "output": 1475,
+      "cacheRead": 11904,
+      "cacheWrite": 0,
+      "total_tokens": 22214,
+      "reported_total_tokens": 22214,
+      "reasoning_tokens": 93,
+      "final_words": 75,
+      "prose_words": 75,
+      "final_characters": 541,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 4531,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 1,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0348008,
+      "input_context_tokens": 20739,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 4531,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 1744,
+          "errors": 1
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.986
+    },
+    {
+      "pair": 3,
+      "arm": "laconic",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:41:34.462989+00:00",
+      "elapsed_seconds": 25.267,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 5323,
+      "output": 1357,
+      "cacheRead": 14720,
+      "cacheWrite": 0,
+      "total_tokens": 21400,
+      "reported_total_tokens": 21400,
+      "reasoning_tokens": 108,
+      "final_words": 73,
+      "prose_words": 73,
+      "final_characters": 481,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 3761,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 1,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.02716,
+      "input_context_tokens": 20043,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 3761,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 974,
+          "errors": 1
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 2.393
+    },
+    {
+      "pair": 3,
+      "arm": "runtime",
+      "task": "usage",
+      "started_utc": "2026-10-10T15:42:00.060878+00:00",
+      "elapsed_seconds": 45.958,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 9232,
+      "output": 1674,
+      "cacheRead": 11008,
+      "cacheWrite": 0,
+      "total_tokens": 21914,
+      "reported_total_tokens": 21914,
+      "reasoning_tokens": 124,
+      "final_words": 106,
+      "prose_words": 106,
+      "final_characters": 776,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 6776,
+      "runtime_filtered_results": 0,
+      "recovery_calls": 0,
+      "tool_errors": 1,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0374056,
+      "input_context_tokens": 20240,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 6776,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 4,
+          "text_bytes": 3800,
+          "errors": 1
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.328
+    }
+  ],
+  "arms": {
+    "baseline": {
+      "final_words": {
+        "sum": 293,
+        "mean": 97.66666666666667,
+        "median": 98
+      },
+      "prose_words": {
+        "sum": 293,
+        "mean": 97.66666666666667,
+        "median": 98
+      },
+      "output": {
+        "sum": 4893,
+        "mean": 1631,
+        "median": 1614
+      },
+      "input": {
+        "sum": 19891,
+        "mean": 6630.333333333333,
+        "median": 5849
+      },
+      "cacheRead": {
+        "sum": 43776,
+        "mean": 14592,
+        "median": 14336
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 68560,
+        "mean": 22853.333333333332,
+        "median": 21522
+      },
+      "input_context_tokens": {
+        "sum": 63667,
+        "mean": 21222.333333333332,
+        "median": 19908
+      },
+      "tool_calls": {
+        "sum": 28,
+        "mean": 9.333333333333334,
+        "median": 9
+      },
+      "tool_result_text_bytes": {
+        "sum": 19414,
+        "mean": 6471.333333333333,
+        "median": 6701
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 19414,
+        "mean": 6471.333333333333,
+        "median": 6701
+      },
+      "model_calls": {
+        "sum": 19,
+        "mean": 6.333333333333333,
+        "median": 6
+      },
+      "estimated_cost_usd": {
+        "sum": 0.0974672,
+        "mean": 0.03248906666666667,
+        "median": 0.0325488
+      },
+      "elapsed_seconds": {
+        "sum": 83.607,
+        "mean": 27.869,
+        "median": 26.211
+      },
+      "runtime_filtered_results": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "recovery_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "tool_errors": {
+        "sum": 2,
+        "mean": 0.6666666666666666,
+        "median": 1
+      },
+      "verified": true
+    },
+    "laconic": {
+      "final_words": {
+        "sum": 234,
+        "mean": 78,
+        "median": 79
+      },
+      "prose_words": {
+        "sum": 234,
+        "mean": 78,
+        "median": 79
+      },
+      "output": {
+        "sum": 4298,
+        "mean": 1432.6666666666667,
+        "median": 1423
+      },
+      "input": {
+        "sum": 20105,
+        "mean": 6701.666666666667,
+        "median": 5323
+      },
+      "cacheRead": {
+        "sum": 39680,
+        "mean": 13226.666666666666,
+        "median": 14592
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 64083,
+        "mean": 21361,
+        "median": 21400
+      },
+      "input_context_tokens": {
+        "sum": 59785,
+        "mean": 19928.333333333332,
+        "median": 19913
+      },
+      "tool_calls": {
+        "sum": 26,
+        "mean": 8.666666666666666,
+        "median": 9
+      },
+      "tool_result_text_bytes": {
+        "sum": 10822,
+        "mean": 3607.3333333333335,
+        "median": 3536
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 10822,
+        "mean": 3607.3333333333335,
+        "median": 3536
+      },
+      "model_calls": {
+        "sum": 18,
+        "mean": 6,
+        "median": 6
+      },
+      "estimated_cost_usd": {
+        "sum": 0.091126,
+        "mean": 0.030375333333333334,
+        "median": 0.0276224
+      },
+      "elapsed_seconds": {
+        "sum": 78.571,
+        "mean": 26.19033333333333,
+        "median": 26.368
+      },
+      "runtime_filtered_results": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "recovery_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "tool_errors": {
+        "sum": 1,
+        "mean": 0.3333333333333333,
+        "median": 0
+      },
+      "verified": true
+    },
+    "runtime": {
+      "final_words": {
+        "sum": 304,
+        "mean": 101.33333333333333,
+        "median": 102
+      },
+      "prose_words": {
+        "sum": 304,
+        "mean": 101.33333333333333,
+        "median": 102
+      },
+      "output": {
+        "sum": 4808,
+        "mean": 1602.6666666666667,
+        "median": 1674
+      },
+      "input": {
+        "sum": 19345,
+        "mean": 6448.333333333333,
+        "median": 5212
+      },
+      "cacheRead": {
+        "sum": 36352,
+        "mean": 12117.333333333334,
+        "median": 12288
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 60505,
+        "mean": 20168.333333333332,
+        "median": 19980
+      },
+      "input_context_tokens": {
+        "sum": 55697,
+        "mean": 18565.666666666668,
+        "median": 18268
+      },
+      "tool_calls": {
+        "sum": 26,
+        "mean": 8.666666666666666,
+        "median": 9
+      },
+      "tool_result_text_bytes": {
+        "sum": 15510,
+        "mean": 5170,
+        "median": 4382
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 15510,
+        "mean": 5170,
+        "median": 4382
+      },
+      "model_calls": {
+        "sum": 18,
+        "mean": 6,
+        "median": 6
+      },
+      "estimated_cost_usd": {
+        "sum": 0.0940404,
+        "mean": 0.0313468,
+        "median": 0.0301552
+      },
+      "elapsed_seconds": {
+        "sum": 117.037,
+        "mean": 39.01233333333333,
+        "median": 43.947
+      },
+      "runtime_filtered_results": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "recovery_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "tool_errors": {
+        "sum": 1,
+        "mean": 0.3333333333333333,
+        "median": 0
+      },
+      "verified": true
+    },
+    "both": {
+      "final_words": {
+        "sum": 235,
+        "mean": 78.33333333333333,
+        "median": 76
+      },
+      "prose_words": {
+        "sum": 235,
+        "mean": 78.33333333333333,
+        "median": 76
+      },
+      "output": {
+        "sum": 4328,
+        "mean": 1442.6666666666667,
+        "median": 1464
+      },
+      "input": {
+        "sum": 27021,
+        "mean": 9007,
+        "median": 8835
+      },
+      "cacheRead": {
+        "sum": 37888,
+        "mean": 12629.333333333334,
+        "median": 12160
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 69237,
+        "mean": 23079,
+        "median": 22214
+      },
+      "input_context_tokens": {
+        "sum": 64909,
+        "mean": 21636.333333333332,
+        "median": 20739
+      },
+      "tool_calls": {
+        "sum": 28,
+        "mean": 9.333333333333334,
+        "median": 9
+      },
+      "tool_result_text_bytes": {
+        "sum": 15356,
+        "mean": 5118.666666666667,
+        "median": 4531
+      },
+      "skill_read_bytes": {
+        "sum": 1316,
+        "mean": 438.6666666666667,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 1,
+        "mean": 0.3333333333333333,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 14040,
+        "mean": 4680,
+        "median": 4531
+      },
+      "model_calls": {
+        "sum": 18,
+        "mean": 6,
+        "median": 6
+      },
+      "estimated_cost_usd": {
+        "sum": 0.10489960000000001,
+        "mean": 0.034966533333333334,
+        "median": 0.0348008
+      },
+      "elapsed_seconds": {
+        "sum": 102.318,
+        "mean": 34.106,
+        "median": 31.201
+      },
+      "runtime_filtered_results": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "recovery_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "tool_errors": {
+        "sum": 3,
+        "mean": 1,
+        "median": 1
+      },
+      "verified": true
+    }
+  },
+  "aggregate_savings_percent": {
+    "final_words": 20.137,
+    "prose_words": 20.137,
+    "output": 12.16,
+    "input": -1.076,
+    "cacheRead": 9.357,
+    "cacheWrite": null,
+    "total_tokens": 6.53,
+    "input_context_tokens": 6.097,
+    "tool_calls": 7.143,
+    "tool_result_text_bytes": 44.257,
+    "skill_read_bytes": null,
+    "skill_read_calls": null,
+    "task_tool_result_text_bytes": 44.257,
+    "model_calls": 5.263,
+    "estimated_cost_usd": 6.506,
+    "elapsed_seconds": 6.023,
+    "runtime_filtered_results": null,
+    "recovery_calls": null,
+    "tool_errors": 50.0
+  },
+  "comparisons_to_baseline": {
+    "laconic": {
+      "final_words": 20.137,
+      "prose_words": 20.137,
+      "output": 12.16,
+      "input": -1.076,
+      "cacheRead": 9.357,
+      "cacheWrite": null,
+      "total_tokens": 6.53,
+      "input_context_tokens": 6.097,
+      "tool_calls": 7.143,
+      "tool_result_text_bytes": 44.257,
+      "skill_read_bytes": null,
+      "skill_read_calls": null,
+      "task_tool_result_text_bytes": 44.257,
+      "model_calls": 5.263,
+      "estimated_cost_usd": 6.506,
+      "elapsed_seconds": 6.023,
+      "runtime_filtered_results": null,
+      "recovery_calls": null,
+      "tool_errors": 50.0
+    },
+    "runtime": {
+      "final_words": -3.754,
+      "prose_words": -3.754,
+      "output": 1.737,
+      "input": 2.745,
+      "cacheRead": 16.959,
+      "cacheWrite": null,
+      "total_tokens": 11.749,
+      "input_context_tokens": 12.518,
+      "tool_calls": 7.143,
+      "tool_result_text_bytes": 20.109,
+      "skill_read_bytes": null,
+      "skill_read_calls": null,
+      "task_tool_result_text_bytes": 20.109,
+      "model_calls": 5.263,
+      "estimated_cost_usd": 3.516,
+      "elapsed_seconds": -39.985,
+      "runtime_filtered_results": null,
+      "recovery_calls": null,
+      "tool_errors": 50.0
+    },
+    "both": {
+      "final_words": 19.795,
+      "prose_words": 19.795,
+      "output": 11.547,
+      "input": -35.845,
+      "cacheRead": 13.45,
+      "cacheWrite": null,
+      "total_tokens": -0.987,
+      "input_context_tokens": -1.951,
+      "tool_calls": 0.0,
+      "tool_result_text_bytes": 20.902,
+      "skill_read_bytes": null,
+      "skill_read_calls": null,
+      "task_tool_result_text_bytes": 27.681,
+      "model_calls": 5.263,
+      "estimated_cost_usd": -7.626,
+      "elapsed_seconds": -22.38,
+      "runtime_filtered_results": null,
+      "recovery_calls": null,
+      "tool_errors": -50.0
+    }
+  },
+  "paired": [
+    {
+      "pair": 1,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 19.388,
+        "prose_words": 19.388,
+        "output": 11.693,
+        "input": -63.19,
+        "cacheRead": 43.357,
+        "cacheWrite": null,
+        "total_tokens": 17.165,
+        "input_context_tokens": 17.555,
+        "tool_calls": 10.0,
+        "tool_result_text_bytes": 47.334,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 47.334,
+        "model_calls": 14.286,
+        "estimated_cost_usd": -11.659,
+        "elapsed_seconds": 15.59,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 100.0
+      }
+    },
+    {
+      "pair": 1,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": 2.041,
+        "prose_words": 2.041,
+        "output": 17.277,
+        "input": 16.208,
+        "cacheRead": 32.867,
+        "cacheWrite": null,
+        "total_tokens": 28.065,
+        "input_context_tokens": 28.833,
+        "tool_calls": 20.0,
+        "tool_result_text_bytes": 34.733,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 34.733,
+        "model_calls": 14.286,
+        "estimated_cost_usd": 18.646,
+        "elapsed_seconds": 13.144,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 100.0
+      }
+    },
+    {
+      "pair": 1,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 22.449,
+        "prose_words": 22.449,
+        "output": 19.197,
+        "input": -41.819,
+        "cacheRead": 33.566,
+        "cacheWrite": null,
+        "total_tokens": 15.569,
+        "input_context_tokens": 15.311,
+        "tool_calls": 10.0,
+        "tool_result_text_bytes": 43.983,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 43.983,
+        "model_calls": 14.286,
+        "estimated_cost_usd": -1.116,
+        "elapsed_seconds": 12.277,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0
+      }
+    },
+    {
+      "pair": 2,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 14.583,
+        "prose_words": 14.583,
+        "output": 11.834,
+        "input": 6.012,
+        "cacheRead": -1.786,
+        "cacheWrite": null,
+        "total_tokens": 1.255,
+        "input_context_tokens": 0.397,
+        "tool_calls": 11.111,
+        "tool_result_text_bytes": 41.24,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 41.24,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 8.387,
+        "elapsed_seconds": -2.974,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null
+      }
+    },
+    {
+      "pair": 2,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": -6.25,
+        "prose_words": -6.25,
+        "output": -6.072,
+        "input": 6.461,
+        "cacheRead": 8.929,
+        "cacheWrite": null,
+        "total_tokens": 7.165,
+        "input_context_tokens": 8.238,
+        "tool_calls": 0.0,
+        "tool_result_text_bytes": 27.455,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 27.455,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -0.013,
+        "elapsed_seconds": -68.006,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null
+      }
+    },
+    {
+      "pair": 2,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 12.5,
+        "prose_words": 12.5,
+        "output": 9.294,
+        "input": -77.513,
+        "cacheRead": 3.571,
+        "cacheWrite": null,
+        "total_tokens": -16.992,
+        "input_context_tokens": -19.123,
+        "tool_calls": -11.111,
+        "tool_result_text_bytes": -17.753,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 4.184,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -23.334,
+        "elapsed_seconds": -19.279,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null
+      }
+    },
+    {
+      "pair": 3,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 26.263,
+        "prose_words": 26.263,
+        "output": 13.013,
+        "input": 37.155,
+        "cacheRead": -32.184,
+        "cacheWrite": null,
+        "total_tokens": -1.106,
+        "input_context_tokens": -2.229,
+        "tool_calls": 0.0,
+        "tool_result_text_bytes": 43.874,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 43.874,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 21.88,
+        "elapsed_seconds": 3.602,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0
+      }
+    },
+    {
+      "pair": 3,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": -7.071,
+        "prose_words": -7.071,
+        "output": -7.308,
+        "input": -8.996,
+        "cacheRead": 1.149,
+        "cacheWrite": null,
+        "total_tokens": -3.534,
+        "input_context_tokens": -3.234,
+        "tool_calls": 0.0,
+        "tool_result_text_bytes": -1.119,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -1.119,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -7.589,
+        "elapsed_seconds": -75.339,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0
+      }
+    },
+    {
+      "pair": 3,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 24.242,
+        "prose_words": 24.242,
+        "output": 5.449,
+        "input": -4.309,
+        "cacheRead": -6.897,
+        "cacheWrite": null,
+        "total_tokens": -4.951,
+        "input_context_tokens": -5.779,
+        "tool_calls": 0.0,
+        "tool_result_text_bytes": 32.383,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 32.383,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -0.097,
+        "elapsed_seconds": -66.777,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0
+      }
+    }
+  ],
+  "definitions": {
+    "savings": "100 * (baseline sum - laconic sum) / baseline sum; negative means increase",
+    "total_tokens": "input + output + cacheRead + cacheWrite summed once per completed assistant message; reasoning is already output",
+    "estimated_cost_usd": "sum of Pi usage.cost.total metadata; catalog-based estimate, not billed/subscription cost",
+    "input_context": "input + cacheRead + cacheWrite; repeated context counted as the provider reports it",
+    "words": "regex word count; prose includes all assistant text, not reasoning/code tool arguments",
+    "tool_bytes": "UTF-8 text content bytes; excludes envelopes, images and tool-call arguments; not token counts",
+    "tool_efficiency": "independent acceptance checks passed / tool-result bytes * 1000; meaningful only for this identical task",
+    "artifact_policy": "non-streaming message_end events; reasoning/signatures omitted, temporary paths replaced"
+  }
+}

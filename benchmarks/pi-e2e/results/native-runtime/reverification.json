@@ -1,0 +1,103 @@
+{
+  "saved_solutions_reverified": 16,
+  "acceptance_passed": 160,
+  "all_suites_passed": true,
+  "runs": [
+    {
+      "run": "log-triage/pair-1/baseline",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "log-triage/pair-1/both",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "log-triage/pair-1/laconic",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "log-triage/pair-1/runtime",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "log-triage/pair-2/baseline",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "log-triage/pair-2/both",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "log-triage/pair-2/laconic",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "log-triage/pair-2/runtime",
+      "acceptance_passed": 11,
+      "acceptance_total": 11,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-1/baseline",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-1/both",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-1/laconic",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-1/runtime",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-2/baseline",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-2/both",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-2/laconic",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    },
+    {
+      "run": "usage/pair-2/runtime",
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0
+    }
+  ]
+}

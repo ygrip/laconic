@@ -48,7 +48,7 @@ Inspired by plain-language ideas behind [ASD-STE100](https://www.asd-ste100.org/
 | --- | --- |
 | Agent replies | Encourages fewer, more useful **output tokens**. |
 | Tool calls | Encourages bounded, relevant results, reducing **input/context tokens** when followed. |
-| Tool-result interception | **Not built in.** Requires a host hook or extension. |
+| Tool-result interception | Not part of the Markdown skill. The [optional native runtime](docs/native-runtime.md) supplies host hooks. |
 | Savings | Not guaranteed. Measure across equivalent tasks and include follow-up calls. |
 
 ### Measured Pi E2E comparison
@@ -63,6 +63,12 @@ Against its matched no-skill baseline, the compact skill produced:
 - **11.0% more total tokens** after input/cache overhead. **The net token-saving goal was not met.**
 
 These small, single-task experiments do not establish general savings. Read the [optimization report](docs/pi-e2e-optimization.md), [original unfavorable results](docs/pi-e2e-comparison.md), and [reproduction instructions](benchmarks/pi-e2e/README.md). All tested revisions and actual outputs are retained.
+
+### Measured native runtime comparison
+
+A fresh **16-session, four-arm Pi experiment** compared baseline, skill, runtime, and both across short repair and noisy-log workflows. All **160/160 independent checks passed**.
+
+On the noisy-log workflow, runtime-only used **66.5% fewer total tokens** and **80.6% fewer tool-result bytes**; skill + runtime used **63.8% fewer tokens** and **83.2% fewer bytes**, including recovery. However, elapsed time increased **63.8%** and **18.8%**, respectively. Short repair sessions had no eligible results to filter and did not establish a general saving. These are small synthetic experiments, not provider-billing or production claims. See the [runtime results, failed attempts, and limitations](docs/pi-e2e-runtime.md).
 
 ### Optional Pi tool-result limits
 
@@ -108,11 +114,11 @@ laconic/
 
 ## Native tool-result runtime (experimental)
 
-Laconic now includes an **optional, deterministic runtime** for filtering model-visible tool results without running an extra LLM. It is separate from the portable Markdown skill. The shared engine preserves recoverable evidence and passes through structured, multimodal, unknown, and unsafe-to-shorten results.
+Laconic now includes an **optional, deterministic runtime** for filtering model-visible tool results without running an extra LLM. It is separate from the portable Markdown skill. The shared engine preserves recoverable evidence and passes through structured, multimodal, unknown, and unsafe-to-shorten results. Pi's known native Bash shape is a narrow display-text exception: its raw structured output remains unchanged for programmatic callers.
 
 - **Pi:** native `tool_result` extension, with recovery tool when supported.
 - **Claude Code:** schema-preserving `PostToolUse` hook for successful shell stdout.
-- **OpenCode V2:** native `execute.after` plugin.
+- **OpenCode:** MCP gateway only; native setup refuses the unavailable V2 tool-hook API.
 - **Codex:** observation-only native hook; no unsupported result-rewrite claim.
 - **MCP stdio:** optional gateway for tools routed through the proxy, with a recovery tool.
 
@@ -125,7 +131,7 @@ node bin/laconic.mjs doctor
 node bin/laconic.mjs disable --harness pi --scope user
 ```
 
-The proposed `npx @ygrip/laconic setup` command requires publishing the npm package separately; **this PR does not publish npm**. Read the [compatibility, configuration and security guide](docs/native-runtime.md) before enabling local hooks. Full results are stored in owner-only local files when recovery is enabled; this is not encryption or secret redaction. Native adapters and the proxy have unit/integration coverage, but live external harness/model compatibility and token savings remain unverified.
+The proposed `npx @ygrip/laconic setup` command requires publishing the npm package separately; **this PR does not publish npm**. Read the [compatibility, configuration and security guide](docs/native-runtime.md) before enabling local hooks. Full results are stored in owner-only local files when recovery is enabled; this is not encryption or secret redaction. Pi has [fresh four-arm E2E benchmarks](docs/pi-e2e-runtime.md). Claude/Codex native compatibility remains unverified; OpenCode native installation is unavailable. Unit/integration tests are not a substitute for live model-facing verification. Savings remain task- and model-dependent.
 
 ## License
 

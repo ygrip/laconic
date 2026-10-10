@@ -4,9 +4,12 @@
   "private": false,
   "type": "module",
   "description": "Portable, recoverable tool-result optimization for agent harnesses",
+  "repository": {"type": "git", "url": "git+https://github.com/ygrip/laconic.git"},
+  "homepage": "https://github.com/ygrip/laconic#readme",
+  "bugs": {"url": "https://github.com/ygrip/laconic/issues"},
   "bin": {"laconic": "./bin/laconic.mjs"},
   "engines": {"node": ">=20"},
-  "scripts": {"test": "node --test tests/*.test.mjs", "check": "node --check runtime/core/engine.mjs && node --check runtime/mcp/gateway.mjs && node --check bin/laconic.mjs"},
-  "files": ["bin/", "runtime/", "README.md", "SKILL.md", "LICENSE", "docs/"],
+  "scripts": {"test": "node --test tests/*.test.mjs", "check": "node bin/check.mjs"},
+  "files": ["bin/", "runtime/", "README.md", "SKILL.md", "LICENSE", "docs/", "references/", "examples/"],
   "license": "MIT"
 }

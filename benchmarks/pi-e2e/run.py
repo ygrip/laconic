@@ -22,7 +22,7 @@ def completed_messages(events):
             and e.get('message', {}).get('role') == 'assistant']
 
 
-def verify(work):
+def verify(work, task='usage'):
     # Independent acceptance checks, not visible to the agent.
     code = r'''
 import importlib.util, json, subprocess, sys
@@ -58,7 +58,14 @@ assert all(r['passed'] for r in results)
     p = subprocess.run(['python3', '-c', code], cwd=work, capture_output=True, text=True)
     tests = subprocess.run(['python3', '-m', 'unittest', 'discover', '-v'], cwd=work,
                            capture_output=True, text=True)
-    return dict(acceptance_exit_code=p.returncode, acceptance=json.loads(p.stdout) if p.stdout else [],
+    acceptance = json.loads(p.stdout) if p.stdout else []
+    if task == 'log-triage':
+        try: incident = json.loads((work/'incident.json').read_text())
+        except (ValueError, OSError): incident = None
+        acceptance.append(dict(name='incident record from diagnostic command', passed=incident ==
+                               dict(customer='cedar', batch=463, reason='stale-cache', lost_calls=17), actual=incident))
+        acceptance.append(dict(name='diagnostic generator unchanged', passed=(work/'diagnose.py').read_bytes() == (ROOT/'log-triage.py').read_bytes()))
+    return dict(acceptance_exit_code=p.returncode if all(c['passed'] for c in acceptance) else 1, acceptance=acceptance,
                 acceptance_stderr=p.stderr, suite_exit_code=tests.returncode,
                 suite_output=tests.stdout + tests.stderr)
 
@@ -68,6 +75,7 @@ def run_one(pair, arm, args, output):
         temp = Path(temporary)
         work, config = temp/'work', temp/'config'
         shutil.copytree(ROOT/'fixture', work)
+        if args.task == 'log-triage': shutil.copy2(ROOT/'log-triage.py', work/'diagnose.py')
         subprocess.run(['git', 'init', '-q', str(work)], check=True)
         config.mkdir()
         source = Path(args.agent_dir).expanduser()
@@ -80,17 +88,41 @@ def run_one(pair, arm, args, output):
         skill.mkdir()
         shutil.copy2(REPO/'SKILL.md', skill/'SKILL.md')
         prompt = (ROOT/'prompt.txt').read_text()
+        if args.task == 'log-triage':
+            prompt += '\nFirst run `python3 diagnose.py` directly (no pipe, redirect, or source inspection). Diagnose the failed reconciliation from its emitted log. If the result is partial, recover the incident record before continuing. Write incident.json with customer, batch (integer), reason, and lost_calls (integer). Do not modify diagnose.py. Then complete the utility repair above.\n'
         command = ['pi', '--mode', 'json', '--print', '--no-session', '--no-extensions',
                    '--no-mcp', '--no-skills', '--no-prompt-templates', '--no-themes',
-                   '--no-context-files', '--tools', 'read,bash,edit,write',
+                   '--no-context-files', '--tools', 'read,bash,edit,write' + (',laconic_read_result' if arm in ('runtime','both') else ''),
                    '--provider', args.provider, '--model', args.model, '--thinking', args.thinking]
-        if arm == 'laconic':
+        if arm in ('laconic', 'both'):
             command += ['--skill', str(skill)]
             prompt = '/skill:laconic ' + prompt
+        # Pi's CLI resource resolver accepts .ts/.js, not .mjs (even though the
+        # low-level extension loader can import .mjs). Use a real CLI entry.
+        entry = temp/'benchmark-extension.ts'
+        entry.write_text('import audit from ' + json.dumps((ROOT/'audit-extension.ts').as_uri()) + ';\n' +
+                         'import laconic from ' + json.dumps((REPO/'runtime/adapters/pi.mjs').as_uri()) + ';\n' +
+                         'export default async function(pi) { ' +
+                         ('await laconic(pi); ' if arm in ('runtime','both') else '') + 'audit(pi); }\n')
+        command += ['--extension', str(entry)]
         command += [prompt]
         env = dict(os.environ, PI_CODING_AGENT_DIR=str(config), PI_SKIP_VERSION_CHECK='1', PI_TELEMETRY='0')
+        policy_file = temp/'policy.json'
+        policy_file.write_text('{}')  # Explicit defaults; ignore the user's runtime settings.
+        env.update(LACONIC_CONFIG=str(policy_file), LACONIC_STORE_DIR=str(temp/'recovery'),
+                   LACONIC_BENCHMARK_RUNTIME='1' if arm in ('runtime','both') else '0',
+                   LACONIC_BENCHMARK_AUDIT=str(temp/'startup-audit.json'))
+        env.pop('LACONIC_BENCHMARK_PREFLIGHT', None)
         for key in ('PI_SESSION_ID', 'PI_SESSION_FILE', 'PI_PROVIDER', 'PI_MODEL', 'PI_REASONING_LEVEL'):
             env.pop(key, None)
+        preflight = subprocess.run(command, cwd=work, env=dict(env, LACONIC_BENCHMARK_PREFLIGHT='1'),
+                                   capture_output=True, text=True, timeout=30)
+        audit_path = temp/'startup-audit.json'
+        if preflight.returncode or not audit_path.exists():
+            raise RuntimeError(f'Pi activation preflight failed for {arm}: {preflight.returncode}; {preflight.stderr}')
+        preflight_audit = json.loads(audit_path.read_text())
+        if not preflight_audit.get('correct_active_tools'): raise RuntimeError('Incorrect preflight tool activation')
+        audit_path.unlink()
         started = dt.datetime.now(dt.timezone.utc).isoformat()
         start = time.monotonic()
         p = subprocess.run(command, cwd=work, env=env, capture_output=True, text=True, timeout=args.timeout)
@@ -104,9 +136,13 @@ def run_one(pair, arm, args, output):
             raise RuntimeError(f'Pi failed for {pair}/{arm}: exit={p.returncode}; {p.stderr}; {messages[-1:]!r}')
         dest = output/f'pair-{pair}'/arm
         dest.mkdir(parents=True)
+        if not audit_path.exists(): raise RuntimeError('Benchmark observer was not loaded in provider session')
+        startup_audit = json.loads(audit_path.read_text())
+        if not startup_audit.get('correct_active_tools'): raise RuntimeError('Incorrect provider-session tool activation')
+        (dest/'startup-audit.json').write_text(json.dumps(dict(preflight=preflight_audit, session=startup_audit),indent=2)+'\n')
 
         def sanitize(text):
-            return text.replace(str(work), '<WORKSPACE>').replace(str(skill), '<SKILL>').replace(str(temp), '<TEMP>')
+            return text.replace(str(work), '<WORKSPACE>').replace(str(skill), '<SKILL>').replace(str(temp), '<TEMP>').replace(str(REPO), '<REPO>')
 
         # Publish complete non-streaming messages; omit private reasoning and opaque signatures.
         public = []
@@ -126,12 +162,18 @@ def run_one(pair, arm, args, output):
         (dest/'stderr.txt').write_text(sanitize(p.stderr))
         shutil.copy2(work/'usage_summary.py', dest/'usage_summary.py')
         shutil.copytree(work, dest/'solution', ignore=shutil.ignore_patterns('.git','__pycache__'))
-        checks = verify(work)
+        if (temp/'recovery').exists():
+            recovery_dest = dest/'recovery'
+            recovery_dest.mkdir()
+            for stored in (temp/'recovery').iterdir():
+                (recovery_dest/stored.name).write_text(sanitize(stored.read_text()))
+        checks = verify(work, args.task)
         (dest/'verification.json').write_text(json.dumps(checks, indent=2)+'\n')
         totals = {k:sum(m.get('usage', {}).get(k, 0) for m in messages) for k in FIELDS}
         tool_messages = [e['message'] for e in events if e.get('type') == 'message_end'
                          and e.get('message', {}).get('role') == 'toolResult']
-        metrics = dict(pair=pair, arm=arm, started_utc=started, elapsed_seconds=round(elapsed, 3),
+        optimized = [m for m in tool_messages if any('[Laconic: partial ' in b.get('text','') for b in m['content'])]
+        metrics = dict(pair=pair, arm=arm, task=args.task, started_utc=started, elapsed_seconds=round(elapsed, 3),
                        pi_exit_code=p.returncode, model=args.model, provider=args.provider,
                        thinking=args.thinking, model_calls=len(messages), **totals,
                        total_tokens=sum(totals.values()),
@@ -142,6 +184,9 @@ def run_one(pair, arm, args, output):
                        final_characters=len(final), tool_calls=len(tool_messages),
                        tool_result_text_bytes=sum(len(b['text'].encode()) for m in tool_messages
                                                   for b in m['content'] if b['type'] == 'text'),
+                       runtime_filtered_results=len(optimized),
+                       recovery_calls=sum(m.get('toolName') == 'laconic_read_result' for m in tool_messages),
+                       tool_errors=sum(bool(m.get('isError')) for m in tool_messages),
                        acceptance_passed=sum(c['passed'] for c in checks['acceptance']),
                        acceptance_total=len(checks['acceptance']), suite_exit_code=checks['suite_exit_code'])
         (dest/'metrics.json').write_text(json.dumps(metrics, indent=2)+'\n')
@@ -152,6 +197,8 @@ def run_one(pair, arm, args, output):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--pairs', type=int, default=3)
+    parser.add_argument('--arms', nargs='+', choices=['baseline','laconic','runtime','both'], default=['baseline','laconic'])
+    parser.add_argument('--tasks', nargs='+', choices=['usage','log-triage'], default=['usage'])
     parser.add_argument('--provider', default='openai-codex')
     parser.add_argument('--model', default='gpt-6-sol')
     parser.add_argument('--thinking', default='medium')
@@ -160,24 +207,36 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     if args.pairs < 1: parser.error('--pairs must be positive')
+    if len(set(args.arms)) != len(args.arms) or len(set(args.tasks)) != len(args.tasks): parser.error('duplicate arms/tasks')
+    if 'baseline' not in args.arms: parser.error('baseline arm is required')
     output = args.output.resolve()
     if output.exists(): parser.error('output already exists; choose a new directory to preserve evidence')
     output.mkdir(parents=True)
     version = subprocess.check_output(['pi','--version'], text=True).strip()
-    manifest = dict(pi_version=version, pairs=args.pairs, provider=args.provider, model=args.model,
+    runtime_hashes = {str(path.relative_to(REPO)): hashlib.sha256(path.read_bytes()).hexdigest()
+                      for path in sorted((REPO/'runtime').rglob('*.mjs'))}
+    manifest = dict(pi_version=version, pairs=args.pairs, arms=args.arms, tasks=args.tasks,
+                    runtime_sha256=runtime_hashes, runtime_policy='explicit defaults, fresh local recovery store per run',
+                    observer_sha256=hashlib.sha256((ROOT/'audit-extension.ts').read_bytes()).hexdigest(),
+                    activation='temporary .ts CLI entry; identical silent startup observer in all arms; pre-inference CLI preflight and published active-tool audits',
+                    log_triage_sha256=hashlib.sha256((ROOT/'log-triage.py').read_bytes()).hexdigest(),
+                    provider=args.provider, model=args.model,
                     thinking=args.thinking, skill_sha256=hashlib.sha256((REPO/'SKILL.md').read_bytes()).hexdigest(),
                     prompt_sha256=hashlib.sha256((ROOT/'prompt.txt').read_bytes()).hexdigest(),
-                    order='odd pairs: baseline then laconic; even pairs: laconic then baseline',
-                    isolation='temporary cwd/config; no extensions/MCP/context/discovered skills/templates/themes; four built-in tools',
+                    order='odd pairs: requested arm order; even pairs: reverse order; tasks in requested order',
+                    isolation='temporary cwd/config; no MCP/context/discovered skills/templates/themes; explicit silent startup observer in all arms; runtime hook and recovery only in runtime/both; four built-in tools plus recovery tool in runtime/both',
                     skill_activation='--no-skills --skill <SKILL>; /skill:laconic <identical task>',
                     event_filter='message_end only; thinking and opaque signatures removed; temporary paths replaced',
                     platform=os.uname().sysname, python_version=subprocess.check_output(['python3','--version'], text=True).strip())
     (output/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n')
     shutil.copy2(REPO/'SKILL.md', output/'SKILL.md')
     metrics = []
-    for pair in range(1, args.pairs+1):
-        for arm in (['baseline','laconic'] if pair % 2 else ['laconic','baseline']):
-            metrics.append(run_one(pair, arm, args, output))
+    for task in args.tasks:
+        args.task = task
+        task_output = output/task if len(args.tasks) > 1 else output
+        for pair in range(1, args.pairs+1):
+            for arm in (args.arms if pair % 2 else list(reversed(args.arms))):
+                metrics.append(run_one(pair, arm, args, task_output))
     (output/'metrics.json').write_text(json.dumps(metrics, indent=2)+'\n')
 
 

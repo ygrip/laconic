@@ -8,12 +8,17 @@ import statistics
 METRICS = ('final_words', 'prose_words', 'output', 'input', 'cacheRead', 'cacheWrite',
            'total_tokens', 'input_context_tokens', 'tool_calls', 'tool_result_text_bytes',
            'skill_read_bytes', 'skill_read_calls', 'task_tool_result_text_bytes', 'model_calls',
-           'estimated_cost_usd', 'elapsed_seconds')
+           'estimated_cost_usd', 'elapsed_seconds', 'runtime_filtered_results', 'recovery_calls', 'tool_errors')
 
 
 def analyze(root):
     runs = []
-    for path in sorted(root.glob('pair-*/*/metrics.json')):
+    paths = list(root.glob('pair-*/*/metrics.json'))
+    if not paths and (root/'manifest.json').exists():
+        manifest = json.loads((root/'manifest.json').read_text())
+        if len(manifest.get('tasks',[])) > 1:
+            paths = [path for task in manifest['tasks'] for path in (root/task).glob('pair-*/*/metrics.json')]
+    for path in sorted(paths):
         metric = json.loads(path.read_text())
         events = [json.loads(line) for line in (path.parent/'events.jsonl').read_text().splitlines()]
         by_tool = {}
@@ -38,6 +43,10 @@ def analyze(root):
                 skill_calls += 1
                 skill_bytes += sum(len(b['text'].encode()) for b in message['content'] if b['type'] == 'text')
         # Sanitized paths can slightly change byte counts; original counts are in metrics.json.
+        metric['runtime_filtered_results'] = sum('[Laconic: partial ' in '\n'.join(b.get('text','') for b in e['message'].get('content', []))
+                                                   for e in events if e['message'].get('role') == 'toolResult')
+        metric['recovery_calls'] = by_tool.get('laconic_read_result', {}).get('calls',0)
+        metric['tool_errors'] = sum(t['errors'] for t in by_tool.values())
         metric['estimated_cost_usd'] = sum(event['message'].get('usage', {}).get('cost', {}).get('total', 0)
                                            for event in events if event['message'].get('role') == 'assistant')
         metric['input_context_tokens'] = sum(metric[k] for k in ('input', 'cacheRead', 'cacheWrite'))
@@ -48,21 +57,29 @@ def analyze(root):
                          acceptance_checks_per_1000_tool_bytes=round(metric['acceptance_passed']*1000 /
                                                                     metric['tool_result_text_bytes'], 3)))
     arms = {}
-    for arm in ('baseline', 'laconic'):
+    arm_names = [arm for arm in ('baseline','laconic','runtime','both') if any(r['arm']==arm for r in runs)]
+    if 'baseline' not in arm_names or len(arm_names) < 2: raise ValueError('baseline and at least one treatment are required')
+    for arm in arm_names:
         subset = [r for r in runs if r['arm'] == arm]
         if not subset: raise ValueError(f'missing arm: {arm}')
         arms[arm] = {k: dict(sum=sum(r[k] for r in subset), mean=statistics.mean(r[k] for r in subset),
                              median=statistics.median(r[k] for r in subset)) for k in METRICS}
         arms[arm]['verified'] = all(r['acceptance_passed'] == r['acceptance_total'] and r['suite_exit_code'] == 0 for r in subset)
-    savings = {k: round(100*(arms['baseline'][k]['sum']-arms['laconic'][k]['sum']) /
-                        arms['baseline'][k]['sum'], 3) if arms['baseline'][k]['sum'] else None for k in METRICS}
+    comparisons = {arm: {k: round(100*(arms['baseline'][k]['sum']-arms[arm][k]['sum']) /
+                                 arms['baseline'][k]['sum'], 3) if arms['baseline'][k]['sum'] else None for k in METRICS}
+                   for arm in arm_names if arm != 'baseline'}
     paired = []
-    for pair in sorted(set(r['pair'] for r in runs)):
-        b = next(r for r in runs if r['pair']==pair and r['arm']=='baseline')
-        l = next(r for r in runs if r['pair']==pair and r['arm']=='laconic')
-        paired.append(dict(pair=pair, savings_percent={k:round(100*(b[k]-l[k])/b[k], 3)
-                                                     if b[k] else None for k in METRICS}))
-    return dict(runs=runs, arms=arms, aggregate_savings_percent=savings, paired=paired,
+    groups = sorted(set((r.get('task','usage'),r['pair']) for r in runs))
+    for task, pair in groups:
+        subset = [r for r in runs if r.get('task','usage') == task and r['pair'] == pair]
+        b = next(r for r in subset if r['arm']=='baseline')
+        for arm in arm_names:
+            if arm == 'baseline': continue
+            l = next(r for r in subset if r['arm']==arm)
+            paired.append(dict(task=task, pair=pair, arm=arm, savings_percent={k:round(100*(b[k]-l[k])/b[k], 3)
+                                                                           if b[k] else None for k in METRICS}))
+    return dict(runs=runs, arms=arms, aggregate_savings_percent=comparisons.get('laconic', next(iter(comparisons.values()))),
+                comparisons_to_baseline=comparisons, paired=paired,
                 definitions=dict(savings='100 * (baseline sum - laconic sum) / baseline sum; negative means increase',
                                  total_tokens='input + output + cacheRead + cacheWrite summed once per completed assistant message; reasoning is already output',
                                  estimated_cost_usd='sum of Pi usage.cost.total metadata; catalog-based estimate, not billed/subscription cost',
@@ -79,8 +96,10 @@ def main():
     args = parser.parse_args()
     summary = analyze(args.results)
     (args.results/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
-    for key, value in summary['aggregate_savings_percent'].items():
-        print(f'{key}: {value:+.3f}% reduction' if value is not None else f'{key}: n/a')
+    for arm, comparison in summary['comparisons_to_baseline'].items():
+        print(arm)
+        for key, value in comparison.items():
+            print(f'  {key}: {value:+.3f}% reduction' if value is not None else f'  {key}: n/a')
     print('verified:', {arm: data['verified'] for arm, data in summary['arms'].items()})
 
 

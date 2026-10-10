@@ -1,0 +1,11 @@
+{"type": "message_start", "message": {"role": "assistant", "stopReason": "stop", "usage": {"input": 100, "output": 20, "cacheRead": 40, "cacheWrite": 10, "reasoning": 8, "totalTokens": 999}}}
+
+{"type": "message_update", "message": {"role": "assistant", "stopReason": "stop", "usage": {"input": 100, "output": 20, "cacheRead": 40, "cacheWrite": 10, "reasoning": 8, "totalTokens": 999}}}
+
+{"type": "message_end", "message": {"role": "assistant", "stopReason": "toolUse", "usage": {"input": 100, "output": 20, "cacheRead": 40, "cacheWrite": 10, "reasoning": 8, "totalTokens": 999}}}
+
+{"type": "message_end", "message": {"role": "toolResult", "stopReason": "stop", "usage": {"input": 999}}}
+
+{"type": "message_end", "message": {"role": "assistant", "stopReason": "stop", "usage": {"input": 50, "output": 15, "cacheRead": 10, "totalTokens": 75}}}
+
+{"type": "message_end", "message": {"role": "assistant", "stopReason": "error", "usage": {"input": 1000}}}

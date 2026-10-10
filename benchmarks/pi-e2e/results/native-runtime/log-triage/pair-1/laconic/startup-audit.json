@@ -1,0 +1,34 @@
+{
+  "preflight": {
+    "runtime_expected": false,
+    "active_tools": [
+      "bash",
+      "edit",
+      "read",
+      "write"
+    ],
+    "available_tools": [
+      "bash",
+      "edit",
+      "read",
+      "write"
+    ],
+    "correct_active_tools": true
+  },
+  "session": {
+    "runtime_expected": false,
+    "active_tools": [
+      "bash",
+      "edit",
+      "read",
+      "write"
+    ],
+    "available_tools": [
+      "bash",
+      "edit",
+      "read",
+      "write"
+    ],
+    "correct_active_tools": true
+  }
+}

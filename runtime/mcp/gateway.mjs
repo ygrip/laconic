@@ -16,10 +16,22 @@ export function createGateway({command,args=[],cwd=process.cwd(),spawnChild=spaw
   if (!command) throw new Error('Upstream MCP command is required');
   const child=spawnChild(command,args,{cwd,stdio:['pipe','pipe','inherit'],env:process.env});
   const pending = new Map();
-  let recoveryNameAvailable = true;
+  let recoveryNameAvailable = false;
+  let upstreamRecoverySeen = false;
+  let responses = Promise.resolve();
   const key=id=>JSON.stringify(id);
   child.on('error',error => { process.stderr.write(`laconic MCP upstream error: ${error.message}\n`); process.exitCode=1; });
-  child.on('exit', (code,signal) => { if (code || signal) process.exitCode=code||1; });
+  child.stdin.on('error', error => {
+    if (error.code !== 'EPIPE') process.stderr.write(`laconic MCP input error: ${error.message}\n`);
+  });
+  child.on('close', (code,signal) => {
+    responses.finally(() => {
+      process.exitCode = process.exitCode || code || (signal ? 1 : 0);
+      clients.close();
+      process.stdin.destroy();
+      pending.clear();
+    });
+  });
   const clients=createInterface({input:process.stdin,crlfDelay:Infinity});
   const servers=createInterface({input:child.stdout,crlfDelay:Infinity});
 
@@ -44,7 +56,7 @@ export function createGateway({command,args=[],cwd=process.cwd(),spawnChild=spaw
     child.stdin.write(line+'\n');
   });
   // Handle model-facing tool responses before sending them to the client.
-  servers.on('line', async line=>{
+  const handleResponse = async line=>{
     let message;
     try {message=JSON.parse(line)} catch {process.stdout.write(line+'\n');return}
     if (!message || typeof message !== 'object' || Array.isArray(message) || !Object.hasOwn(message,'id')) {
@@ -55,13 +67,17 @@ export function createGateway({command,args=[],cwd=process.cwd(),spawnChild=spaw
     if (!request || message.error) {process.stdout.write(line+'\n');return}
     try {
       if (request.method==='tools/list' && Array.isArray(message.result?.tools)) {
-        if (message.result.tools.some(tool=>tool.name===RECOVERY)) recoveryNameAvailable=false;
-        if (!request.cursor && recoveryNameAvailable) {
+        if (!request.cursor) upstreamRecoverySeen = false;
+        if (message.result.tools.some(tool=>tool.name===RECOVERY)) upstreamRecoverySeen = true;
+        // Establish ownership only after the last page: a later page may contain
+        // an upstream tool with the same name. Before listing, pass calls upstream.
+        recoveryNameAvailable = !message.result.nextCursor && !upstreamRecoverySeen;
+        if (recoveryNameAvailable) {
           message.result.tools.push(recoveryTool);
           return send(message);
         }
       }
-      if (request.method==='tools/call' && message.result && !message.result.isError &&
+      if (recoveryNameAvailable && request.method==='tools/call' && message.result && !message.result.isError &&
           !Object.hasOwn(message.result,'structuredContent') && Array.isArray(message.result.content) &&
           message.result.content.length===1 && message.result.content[0]?.type==='text') {
         const original=message.result.content[0].text;
@@ -74,8 +90,9 @@ export function createGateway({command,args=[],cwd=process.cwd(),spawnChild=spaw
       }
     } catch { /* Pass original response through. */ }
     process.stdout.write(line+'\n');
-  });
-  clients.on('close',()=>{ child.stdin.end(); });
+  };
+  servers.on('line', line => { responses = responses.then(() => handleResponse(line)); });
+  clients.on('close',()=>{ if (!child.stdin.destroyed) child.stdin.end(); });
   return {child,pending};
 }
 

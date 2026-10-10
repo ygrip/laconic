@@ -1,0 +1,3 @@
+Fixed `usage_summary.py`: it previously counted assistant records regardless of event type or completion status, added reasoning to output, and trusted a supplied total. It now counts only completed assistant `message_end` records, sums the four usage fields, and computes `totalTokens` from those sums. Regression tests cover excluded records, missing usage, and double-counting.
+
+Verification: 7 tests passed. The CLI returned `{"calls": 2, "input": 150, "output": 35, "cacheRead": 50, "cacheWrite": 10, "totalTokens": 245}` for `session.jsonl`. This is fixture verification, not live-provider or production verification.

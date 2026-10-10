@@ -4,15 +4,17 @@ import { saveResult } from './store.mjs';
 const ERROR = /(?:\berror\b|\bfailed?\b|\bexception\b|\btraceback\b|\bpanic\b|\bfatal\b|\bwarning\b|\bwarn\b|\bassert(?:ion)?\b|^\s*at\s+\S+|^\s*Caused by:|^\s*FAIL\b)/i;
 const SUMMARY = /(?:\b\d+\s+(?:passing|passed|failed|skipped|tests?)\b|\btest suites?:|\btests?:|\bexit(?:ed)?(?: code| status)?\s*[:=]?\s*\d+|\bbuild\s+(?:success|failure)|^\s*total\s*:)/i;
 const categoryFor = (name, args = {}) => {
-  const tool = String(name ?? '').toLowerCase();
+  const tool = String(name ?? '').toLowerCase().split('__').at(-1);
   const command = String(args?.command ?? args?.cmd ?? '');
-  if (/\b(?:test|pytest|jest|vitest|unittest|mvn test|gradle test|go test|cargo test)\b/i.test(command) || /(?:^|_)test(?:$|_)/.test(tool)) return 'test';
-  if (/\bgit\s+(diff|show|apply|status|log)\b/.test(command)) return 'git';
-  if (/\b(?:cat|sed|head)\s+[^|]+/.test(command) && !/\|/.test(command)) return 'file';
-  if (/(?:grep|search|ripgrep|find|glob)/.test(tool) || tool === 'rg' || /\b(?:rg|grep|find)\s+/.test(command)) return 'search';
-  if (/(?:bash|shell|exec|terminal|command)/.test(tool)) return 'shell';
-  if (/(?:read|file|cat)/.test(tool)) return 'file';
-  if (/(?:git|diff|patch)/.test(tool)) return 'git';
+  // Protect source and diffs even in pipelines/compound commands or commands mentioning tests.
+  if (/\bgit\b[^\n;&|]*\b(?:diff|show|apply|status|log)\b/.test(command) || ['git_diff','git_show','diff','patch'].includes(tool)) return 'git';
+  if (/\b(?:cat|sed|head|tail|Get-Content)\b/i.test(command) || ['read','read_file','file','cat'].includes(tool)) return 'file';
+  if (['grep','search','ripgrep','find','glob','rg'].includes(tool)) return 'search';
+  // A tool with an incidental substring (e.g. execute_payment) is NOT a shell.
+  if (!['bash','powershell','shell','exec','execute','terminal','command','test','run_tests'].includes(tool)) return 'unknown';
+  if (/\b(?:test|pytest|jest|vitest|unittest)\b/i.test(command) || ['test','run_tests'].includes(tool)) return 'test';
+  if (/\b(?:rg|grep|find)\s+/.test(command)) return 'search';
+  if (tool) return 'shell';
   return 'unknown';
 };
 export const DEFAULT_POLICY = Object.freeze({
@@ -34,46 +36,65 @@ export function mergePolicy(input = {}) {
 function buildExcerpt(text, maxBytes) {
   const lines = text.split('\n');
   const keep = new Set();
-  const choose = i => { if (i >= 0 && i < lines.length) keep.add(i); };
-  for (let i = 0; i < Math.min(10, lines.length); i++) choose(i);
-  for (let i = Math.max(0, lines.length - 15); i < lines.length; i++) choose(i);
-  const matched = [];
-  for (let i = 0; i < lines.length; i++) if (ERROR.test(lines[i]) || SUMMARY.test(lines[i])) matched.push(i);
-  // Error evidence has priority, followed by summaries and nearby stack lines.
-  for (const i of matched.slice(0, 40)) for (let offset = -1; offset <= 2; offset++) choose(i + offset);
-  const sorted = [...keep].sort((a,b)=>a-b);
-  let excerpt = '', last = -1, displayed = 0;
-  for (const i of sorted) {
-    let line = lines[i];
-    if (line.length > 2_048) line = line.slice(0, 2_048) + ' [line shortened]';
-    const gap = last !== -1 && i > last + 1 ? `\n[... ${i-last-1} lines omitted ...]\n` : (last < 0 ? '' : '\n');
-    const next = gap + `[${i+1}] ${line}`;
-    if (Buffer.byteLength(excerpt + next, 'utf8') > Math.max(256, maxBytes - 220)) break;
-    excerpt += next;
-    displayed++;
-    last = i;
+  const render = () => {
+    let last = -1;
+    return [...keep].sort((a,b)=>a-b).map(i => {
+      const gap = i > last + 1 ? `[... ${i-last-1} lines omitted ...]\n` : '';
+      last = i;
+      return gap + `[${i+1}] ${lines[i]}`;
+    }).join('\n');
+  };
+  const choose = i => {
+    if (i < 0 || i >= lines.length || keep.has(i)) return;
+    keep.add(i);
+    if (Buffer.byteLength(render(), 'utf8') > maxBytes) keep.delete(i);
+  };
+  const errors = [], summaries = [], warnings = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (ERROR.test(lines[i])) (/\bwarn(?:ing)?\b/i.test(lines[i]) ? warnings : errors).push(i);
+    if (SUMMARY.test(lines[i])) summaries.push(i);
   }
-  return { excerpt, displayed, lines: lines.length };
+  // Select by importance BEFORE rendering in source order. Long head lines must not
+  // consume the budget and hide a failure or a final test summary.
+  for (const matches of [errors, summaries]) {
+    if (matches.length) { choose(matches[0]); choose(matches.at(-1)); }
+    for (const i of matches.slice(0, 40)) choose(i);
+  }
+  for (let i = lines.length - 1; i >= Math.max(0, lines.length - 15); i--) choose(i);
+  for (const i of errors.slice(0, 40)) for (const offset of [-1, 1, 2]) choose(i + offset);
+  for (let i = 0; i < Math.min(10, lines.length); i++) choose(i);
+  for (const i of warnings.slice(0, 10)) choose(i);
+  return { excerpt: render(), displayed: keep.size, lines: lines.length };
 }
 
 /** Optimize a plain UTF-8 text value. Any failure returns the original (fail open). */
 export async function optimizeText({ harness='unknown', name='', args={}, text, isError=false, exitCode, policy={} }) {
-  const settings = mergePolicy(policy);
   const category = categoryFor(name, args);
   const originalBytes = Buffer.byteLength(String(text ?? ''), 'utf8');
   const unchanged = { content: text, changed: false, truncated: false, category, originalBytes, resultingBytes: originalBytes };
-  if (!settings.enabled || typeof text !== 'string' || originalBytes < settings.minBytes ||
-      !settings.allowedCategories.includes(category)) return unchanged;
-  const budget = settings.budgets[category];
-  if (!Number.isFinite(budget) || budget < 512 || originalBytes <= budget) return unchanged;
-  if (!settings.recovery?.enabled) return unchanged;
   try {
+    if (!policy || typeof policy !== 'object' || Array.isArray(policy) ||
+        (Object.hasOwn(policy, 'recovery') && !policy.recovery)) return unchanged;
+    const settings = mergePolicy(policy);
+    if (!settings.enabled || typeof text !== 'string' || originalBytes < settings.minBytes ||
+        !settings.allowedCategories.includes(category)) return unchanged;
+    const budget = settings.budgets[category];
+    if (!Number.isFinite(budget) || budget < 512 || originalBytes <= budget) return unchanged;
+    if (!settings.recovery?.enabled) return unchanged;
+    // A shell can print a structured document too. Do not silently destroy its schema.
+    if (/^\s*[\[{]/.test(text)) {
+      try { const value = JSON.parse(text); if (value && typeof value === 'object') return unchanged; } catch {}
+    }
     // Store before compression. If storage fails, do not drop evidence.
     const recoveryId = await saveResult(text, settings.recovery);
     if (!recoveryId) return unchanged;
-    const {excerpt, displayed, lines} = buildExcerpt(text, budget);
     const status = exitCode !== undefined ? ` Exit code: ${exitCode}.` : (isError ? ' Tool reported an error.' : '');
-    const footer = `\n[Laconic: partial ${category} output (${displayed}/${lines} lines, ${originalBytes} bytes).${status} Full result: laconic show ${recoveryId} --from N --count 100]`;
+    const totalLines = text.split('\n').length;
+    const makeFooter = displayed => `\n[Laconic: partial ${category} output (${displayed}/${totalLines} lines, ${originalBytes} bytes).${status} Recover with laconic_read_result id=${recoveryId}, or node <laconic>/bin/laconic.mjs show ${recoveryId} --from N --count 100]`;
+    const {excerpt, displayed} = buildExcerpt(text, budget - Buffer.byteLength(makeFooter(totalLines), 'utf8'));
+    // If no complete evidence line fits, preserve the original rather than a misleading stub.
+    if (!displayed) return unchanged;
+    const footer = makeFooter(displayed);
     const content = excerpt + footer;
     if (Buffer.byteLength(content, 'utf8') >= originalBytes || Buffer.byteLength(content, 'utf8') > budget) return unchanged;
     return { content, changed: true, truncated: true, category, originalBytes,

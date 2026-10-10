@@ -1,0 +1,203 @@
+{
+  "acceptance_exit_code": 0,
+  "acceptance": [
+    {
+      "name": "empty",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "streaming",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "tool result",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "unsuccessful",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "missing usage",
+      "passed": true,
+      "actual": {
+        "calls": 1,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 1,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "partial usage",
+      "passed": true,
+      "actual": {
+        "calls": 1,
+        "input": 0,
+        "output": 7,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 7
+      },
+      "expected": {
+        "calls": 1,
+        "input": 0,
+        "output": 7,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 7
+      }
+    },
+    {
+      "name": "cache and reasoning",
+      "passed": true,
+      "actual": {
+        "calls": 1,
+        "input": 11,
+        "output": 9,
+        "cacheRead": 30,
+        "cacheWrite": 4,
+        "totalTokens": 54
+      },
+      "expected": {
+        "calls": 1,
+        "input": 11,
+        "output": 9,
+        "cacheRead": 30,
+        "cacheWrite": 4,
+        "totalTokens": 54
+      }
+    },
+    {
+      "name": "accepted stops",
+      "passed": true,
+      "actual": {
+        "calls": 3,
+        "input": 6,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 6
+      },
+      "expected": {
+        "calls": 3,
+        "input": 6,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 6
+      }
+    },
+    {
+      "name": "CLI fixture with blank lines",
+      "passed": true,
+      "exit_code": 0,
+      "actual": {
+        "calls": 2,
+        "input": 150,
+        "output": 35,
+        "cacheRead": 50,
+        "cacheWrite": 10,
+        "totalTokens": 245
+      },
+      "expected": {
+        "calls": 2,
+        "input": 150,
+        "output": 35,
+        "cacheRead": 50,
+        "cacheWrite": 10,
+        "totalTokens": 245
+      }
+    },
+    {
+      "name": "incident record from diagnostic command",
+      "passed": true,
+      "actual": {
+        "customer": "cedar",
+        "batch": 463,
+        "reason": "stale-cache",
+        "lost_calls": 17
+      }
+    },
+    {
+      "name": "diagnostic generator unchanged",
+      "passed": true
+    }
+  ],
+  "acceptance_stderr": "",
+  "suite_exit_code": 0,
+  "suite_output": "test_cache_is_included (test_usage_summary.UsageTests.test_cache_is_included) ... ok\ntest_cli_skips_blank_lines (test_usage_summary.UsageTests.test_cli_skips_blank_lines) ... ok\ntest_completed (test_usage_summary.UsageTests.test_completed) ... ok\ntest_missing_usage_still_counts_and_supplied_total_is_ignored (test_usage_summary.UsageTests.test_missing_usage_still_counts_and_supplied_total_is_ignored) ... ok\ntest_only_completed_assistant_messages_count (test_usage_summary.UsageTests.test_only_completed_assistant_messages_count) ... ok\ntest_reasoning_is_not_added_twice (test_usage_summary.UsageTests.test_reasoning_is_not_added_twice) ... ok\ntest_streaming_is_not_a_call (test_usage_summary.UsageTests.test_streaming_is_not_a_call) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.030s\n\nOK\n"
+}

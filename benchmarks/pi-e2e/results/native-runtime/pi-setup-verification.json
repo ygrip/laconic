@@ -1,0 +1,15 @@
+{
+  "pi_version": "1.1.0",
+  "auto_discovered_shim": "laconic.ts",
+  "load_errors": [],
+  "recovery_registered": true,
+  "actual_builtin_shell_executed": true,
+  "successful_and_failed_shells_verified": true,
+  "native_merge_path_verified": true,
+  "native_structured_output_preserved": true,
+  "model_visible_result_replaced": true,
+  "diagnostic_retained": true,
+  "exit_status_retained": true,
+  "recovery_roundtrip": true,
+  "scope": "Actual installed Pi loader, extension API and built-in bash result; no provider inference in this setup smoke test"
+}

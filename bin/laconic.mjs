@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /** Laconic installer, capability inspection, recovery reader, and MCP gateway launcher. */
-import { cp, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { cp, lstat, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
@@ -11,9 +11,9 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const runtimeHome = process.env.LACONIC_HOME || join(homedir(), '.local', 'share', 'laconic');
 const HARNESS = ['pi','claude','opencode','codex'];
 const capabilities = {
-  pi: {observe:true,replace:true, recovery:true, note:'Native tool_result replacement; structured results pass through.'},
+  pi: {observe:true,replace:true, recovery:true, note:'Native tool_result display replacement; known Bash raw structured output preserved, arbitrary structured APIs pass through.'},
   claude: {observe:true,replace:true, recovery:true, note:'PostToolUse Bash/PowerShell success only; schema-preserving replacement.'},
-  opencode: {observe:true,replace:true, recovery:true, note:'V2 execute.after; V1 is not supported.'},
+  opencode: {observe:false,replace:false, recovery:false, note:'Native adapter unavailable: @opencode-ai/plugin 1.18.35 exposes no V2 tool hook. Use the MCP proxy.'},
   codex: {observe:true,replace:false,recovery:false, note:'Observation only; use MCP gateway for supported MCP tools.'}
 };
 const instructions=`Usage:
@@ -58,13 +58,16 @@ async function deployRuntime() {
 }
 async function ownedStub(file,text) {
   await mkdir(dirname(file),{recursive:true});
-  if (existsSync(file) && !(await readFile(file,'utf8')).startsWith('// Managed by Laconic'))
-    throw new Error(`Refusing to overwrite unmanaged file: ${file}`);
-  await writeFile(file,text,{mode:0o600});
+  const info = await lstat(file).catch(error => { if (error.code !== 'ENOENT') throw error; });
+  if (info && (!info.isFile() || info.isSymbolicLink() || !(await readFile(file,'utf8')).startsWith('// Managed by Laconic')))
+    throw new Error(`Refusing to overwrite unmanaged file or symlink: ${file}`);
+  const temporary = file + '.laconic-' + process.pid;
+  await writeFile(temporary,text,{mode:0o600,flag:'wx'});
+  await rename(temporary,file);
 }
 function registration(harness) {
   const root=configRoot(harness);
-  if(harness==='pi')return join(root,'extensions','laconic.mjs');
+  if(harness==='pi')return join(root,'extensions','laconic.ts');
   if(harness==='opencode')return join(root,'plugins','laconic.mjs');
   if(harness==='claude')return join(root,scope()==='user'?'settings.json':'settings.local.json');
   return join(root,'hooks.json');
@@ -75,10 +78,10 @@ async function configureHook(harness,enable=true) {
   const event='PostToolUse';
   const markers={claude:'runtime/adapters/claude.mjs',codex:'runtime/adapters/codex.mjs'};
   const existing=cfg.hooks?.[event] || [];
-  const filtered=existing.map(group=>({...group,hooks:(group.hooks||[]).filter(h=>!String(h.command||'').includes(markers[harness]))})).filter(group=>group.hooks.length>0);
+  const command=`node ${quote(join(runtimeHome,markers[harness]))}`;
+  const filtered=existing.map(group=>({...group,hooks:(group.hooks||[]).filter(h=>h.command !== command)})).filter(group=>group.hooks.length>0);
   if (enable) {
-    const command=`node ${quote(join(runtimeHome,markers[harness]))}`;
-    filtered.push({matcher:'Bash|PowerShell',hooks:[{type:'command',command,timeout:10}]});
+    filtered.push({matcher:harness==='codex'?'*':'Bash|PowerShell',hooks:[{type:'command',command,timeout:10}]});
   }
   cfg.hooks={...cfg.hooks,[event]:filtered};
   await writeJson(file,cfg);
@@ -88,26 +91,26 @@ async function setup(harness){
   if (!HARNESS.includes(harness)) throw new Error('Choose a supported --harness: '+HARNESS.join(', '));
   if (!Number.isInteger(Number(process.versions.node.split('.')[0])) || Number(process.versions.node.split('.')[0])<20)
     throw new Error('Node 20 or newer required');
+  if (harness === 'opencode') throw new Error(capabilities.opencode.note);
   await deployRuntime();
   const file=registration(harness);
-  if (harness==='pi'||harness==='opencode') {
-    const source=join(runtimeHome,'runtime','adapters',harness==='pi'?'pi.mjs':'opencode-core.mjs');
+  if (harness==='pi') {
+    const source=join(runtimeHome,'runtime','adapters','pi.mjs');
     const url=JSON.stringify(pathToFileURL(source).href);
-    const body=harness==='pi'
-      ? `// Managed by Laconic. Re-run setup to update; use laconic disable to remove.\nexport { default } from ${url};\n`
-      : `// Managed by Laconic. OpenCode V2 only.\nimport { Plugin } from '@opencode-ai/plugin/v2';\nimport { transformOpenCode } from ${url};\nexport default Plugin.define({id:'laconic.output',async setup(ctx){await ctx.tool.hook('execute.after',async event=>{try{await transformOpenCode(event);}catch{}});}});\n`;
+    const body=`// Managed by Laconic. Re-run setup to update; use laconic disable to remove.\nexport { default } from ${url};\n`;
     await ownedStub(file,body);
   } else if (harness==='claude') await configureHook(harness,true);
   else if(process.argv.includes('--observe')) await configureHook(harness,true);
   console.log(`${harness}: ${harness==='codex'&&!process.argv.includes('--observe')?'observer not installed (pass --observe for opt-in)':'registered'}\n${file}`);
   console.log(capabilities[harness].note);
-  console.log('Recovery files are owner-only and expire opportunistically after 24 hours; do not enable for sensitive tools without reviewing the policy.');
+  console.log('Recovery uses POSIX owner-only modes and opportunistic 24-hour cleanup (not a deletion deadline); Windows ACL privacy is unverified. Review the policy before enabling for sensitive tools.');
 }
 async function disable(harness) {
   if (!HARNESS.includes(harness)) throw new Error('Invalid harness');
   const file=registration(harness);
   if (harness==='pi'||harness==='opencode') {
-    if (existsSync(file) && (await readFile(file,'utf8')).startsWith('// Managed by Laconic')) await rm(file);
+    const info = await lstat(file).catch(error => { if (error.code !== 'ENOENT') throw error; });
+    if (info?.isFile() && !info.isSymbolicLink() && (await readFile(file,'utf8')).startsWith('// Managed by Laconic')) await rm(file);
   } else if(existsSync(file)) await configureHook(harness,false);
   console.log(`${harness}: disabled (${file})`);
 }
@@ -120,7 +123,20 @@ async function main(){
   }
   if(command==='status'){
     const installed={};
-    for(const harness of HARNESS) installed[harness]={config:registration(harness),exists:existsSync(registration(harness)),...capabilities[harness]};
+    for(const harness of HARNESS) {
+      const file=registration(harness), exists=existsSync(file);
+      let registered=false;
+      if (exists) {
+        if (harness==='pi'||harness==='opencode') {
+          const info=await lstat(file);
+          registered=info.isFile() && !info.isSymbolicLink() && (await readFile(file,'utf8')).startsWith('// Managed by Laconic');
+        } else {
+          const command=`node ${quote(join(runtimeHome,'runtime','adapters',harness+'.mjs'))}`;
+          registered=(await readJson(file)).hooks?.PostToolUse?.some(group=>group.hooks?.some(h=>h.command===command)) ?? false;
+        }
+      }
+      installed[harness]={config:file,exists,registered,...capabilities[harness]};
+    }
     console.log(JSON.stringify(installed,null,2));return;
   }
   if(command==='show'){
