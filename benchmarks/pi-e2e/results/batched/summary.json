@@ -1,0 +1,565 @@
+{
+  "runs": [
+    {
+      "pair": 1,
+      "arm": "baseline",
+      "started_utc": "2026-10-10T14:37:06.987164+00:00",
+      "elapsed_seconds": 47.362,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 5400,
+      "output": 1712,
+      "cacheRead": 12672,
+      "cacheWrite": 0,
+      "total_tokens": 19784,
+      "reported_total_tokens": 19784,
+      "reasoning_tokens": 157,
+      "final_words": 98,
+      "prose_words": 98,
+      "final_characters": 730,
+      "tool_calls": 10,
+      "tool_result_text_bytes": 5342,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.030454400000000003,
+      "input_context_tokens": 18072,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 5342,
+      "by_tool_sanitized": {
+        "bash": {
+          "calls": 5,
+          "text_bytes": 2555,
+          "errors": 1
+        },
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.685
+    },
+    {
+      "pair": 1,
+      "arm": "laconic",
+      "started_utc": "2026-10-10T14:37:54.613290+00:00",
+      "elapsed_seconds": 57.871,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 7,
+      "input": 5363,
+      "output": 1480,
+      "cacheRead": 19968,
+      "cacheWrite": 0,
+      "total_tokens": 26811,
+      "reported_total_tokens": 26811,
+      "reasoning_tokens": 167,
+      "final_words": 89,
+      "prose_words": 89,
+      "final_characters": 649,
+      "tool_calls": 11,
+      "tool_result_text_bytes": 4916,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0295196,
+      "input_context_tokens": 25331,
+      "skill_read_bytes": 1255,
+      "skill_read_calls": 1,
+      "task_tool_result_text_bytes": 3661,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 4,
+          "text_bytes": 3931,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 5,
+          "text_bytes": 874,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 1,
+      "acceptance_checks_per_1000_tool_bytes": 1.831
+    },
+    {
+      "pair": 2,
+      "arm": "baseline",
+      "started_utc": "2026-10-10T14:39:47.618165+00:00",
+      "elapsed_seconds": 40.888,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 8972,
+      "output": 1584,
+      "cacheRead": 10880,
+      "cacheWrite": 0,
+      "total_tokens": 21436,
+      "reported_total_tokens": 21436,
+      "reasoning_tokens": 56,
+      "final_words": 104,
+      "prose_words": 104,
+      "final_characters": 786,
+      "tool_calls": 10,
+      "tool_result_text_bytes": 6603,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.03596,
+      "input_context_tokens": 19852,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 6603,
+      "by_tool_sanitized": {
+        "bash": {
+          "calls": 5,
+          "text_bytes": 3627,
+          "errors": 1
+        },
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.363
+    },
+    {
+      "pair": 2,
+      "arm": "laconic",
+      "started_utc": "2026-10-10T14:38:52.751695+00:00",
+      "elapsed_seconds": 54.604,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 8,
+      "input": 8340,
+      "output": 2195,
+      "cacheRead": 22400,
+      "cacheWrite": 0,
+      "total_tokens": 32935,
+      "reported_total_tokens": 32935,
+      "reasoning_tokens": 260,
+      "final_words": 99,
+      "prose_words": 99,
+      "final_characters": 762,
+      "tool_calls": 14,
+      "tool_result_text_bytes": 5498,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.04311,
+      "input_context_tokens": 30740,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 5498,
+      "by_tool_sanitized": {
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "bash": {
+          "calls": 8,
+          "text_bytes": 2653,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 3,
+          "text_bytes": 169,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.637
+    },
+    {
+      "pair": 3,
+      "arm": "baseline",
+      "started_utc": "2026-10-10T14:40:28.788380+00:00",
+      "elapsed_seconds": 33.322,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 8952,
+      "output": 1633,
+      "cacheRead": 8576,
+      "cacheWrite": 0,
+      "total_tokens": 19161,
+      "reported_total_tokens": 19161,
+      "reasoning_tokens": 81,
+      "final_words": 106,
+      "prose_words": 106,
+      "final_characters": 807,
+      "tool_calls": 9,
+      "tool_result_text_bytes": 4303,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.0359492,
+      "input_context_tokens": 17528,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 4303,
+      "by_tool_sanitized": {
+        "bash": {
+          "calls": 4,
+          "text_bytes": 1516,
+          "errors": 1
+        },
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 2.092
+    },
+    {
+      "pair": 3,
+      "arm": "laconic",
+      "started_utc": "2026-10-10T14:41:02.411170+00:00",
+      "elapsed_seconds": 26.235,
+      "pi_exit_code": 0,
+      "model": "gpt-6-sol",
+      "provider": "openai-codex",
+      "thinking": "medium",
+      "model_calls": 6,
+      "input": 5552,
+      "output": 1465,
+      "cacheRead": 14720,
+      "cacheWrite": 0,
+      "total_tokens": 21737,
+      "reported_total_tokens": 21737,
+      "reasoning_tokens": 92,
+      "final_words": 77,
+      "prose_words": 77,
+      "final_characters": 563,
+      "tool_calls": 10,
+      "tool_result_text_bytes": 4649,
+      "acceptance_passed": 9,
+      "acceptance_total": 9,
+      "suite_exit_code": 0,
+      "estimated_cost_usd": 0.028698,
+      "input_context_tokens": 20272,
+      "skill_read_bytes": 0,
+      "skill_read_calls": 0,
+      "task_tool_result_text_bytes": 4649,
+      "by_tool_sanitized": {
+        "bash": {
+          "calls": 5,
+          "text_bytes": 1862,
+          "errors": 0
+        },
+        "read": {
+          "calls": 3,
+          "text_bytes": 2676,
+          "errors": 0
+        },
+        "edit": {
+          "calls": 2,
+          "text_bytes": 111,
+          "errors": 0
+        }
+      },
+      "results_mentioning_truncation": 0,
+      "acceptance_checks_per_1000_tool_bytes": 1.936
+    }
+  ],
+  "arms": {
+    "baseline": {
+      "final_words": {
+        "sum": 308,
+        "mean": 102.66666666666667,
+        "median": 104
+      },
+      "prose_words": {
+        "sum": 308,
+        "mean": 102.66666666666667,
+        "median": 104
+      },
+      "output": {
+        "sum": 4929,
+        "mean": 1643,
+        "median": 1633
+      },
+      "input": {
+        "sum": 23324,
+        "mean": 7774.666666666667,
+        "median": 8952
+      },
+      "cacheRead": {
+        "sum": 32128,
+        "mean": 10709.333333333334,
+        "median": 10880
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 60381,
+        "mean": 20127,
+        "median": 19784
+      },
+      "input_context_tokens": {
+        "sum": 55452,
+        "mean": 18484,
+        "median": 18072
+      },
+      "tool_calls": {
+        "sum": 29,
+        "mean": 9.666666666666666,
+        "median": 10
+      },
+      "tool_result_text_bytes": {
+        "sum": 16248,
+        "mean": 5416,
+        "median": 5342
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 16248,
+        "mean": 5416,
+        "median": 5342
+      },
+      "model_calls": {
+        "sum": 18,
+        "mean": 6,
+        "median": 6
+      },
+      "estimated_cost_usd": {
+        "sum": 0.1023636,
+        "mean": 0.034121200000000004,
+        "median": 0.0359492
+      },
+      "elapsed_seconds": {
+        "sum": 121.572,
+        "mean": 40.524,
+        "median": 40.888
+      },
+      "verified": true
+    },
+    "laconic": {
+      "final_words": {
+        "sum": 265,
+        "mean": 88.33333333333333,
+        "median": 89
+      },
+      "prose_words": {
+        "sum": 265,
+        "mean": 88.33333333333333,
+        "median": 89
+      },
+      "output": {
+        "sum": 5140,
+        "mean": 1713.3333333333333,
+        "median": 1480
+      },
+      "input": {
+        "sum": 19255,
+        "mean": 6418.333333333333,
+        "median": 5552
+      },
+      "cacheRead": {
+        "sum": 57088,
+        "mean": 19029.333333333332,
+        "median": 19968
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0
+      },
+      "total_tokens": {
+        "sum": 81483,
+        "mean": 27161,
+        "median": 26811
+      },
+      "input_context_tokens": {
+        "sum": 76343,
+        "mean": 25447.666666666668,
+        "median": 25331
+      },
+      "tool_calls": {
+        "sum": 35,
+        "mean": 11.666666666666666,
+        "median": 11
+      },
+      "tool_result_text_bytes": {
+        "sum": 15063,
+        "mean": 5021,
+        "median": 4916
+      },
+      "skill_read_bytes": {
+        "sum": 1255,
+        "mean": 418.3333333333333,
+        "median": 0
+      },
+      "skill_read_calls": {
+        "sum": 1,
+        "mean": 0.3333333333333333,
+        "median": 0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 13808,
+        "mean": 4602.666666666667,
+        "median": 4649
+      },
+      "model_calls": {
+        "sum": 21,
+        "mean": 7,
+        "median": 7
+      },
+      "estimated_cost_usd": {
+        "sum": 0.1013276,
+        "mean": 0.03377586666666667,
+        "median": 0.0295196
+      },
+      "elapsed_seconds": {
+        "sum": 138.71,
+        "mean": 46.236666666666665,
+        "median": 54.604
+      },
+      "verified": true
+    }
+  },
+  "aggregate_savings_percent": {
+    "final_words": 13.961,
+    "prose_words": 13.961,
+    "output": -4.281,
+    "input": 17.446,
+    "cacheRead": -77.689,
+    "cacheWrite": null,
+    "total_tokens": -34.948,
+    "input_context_tokens": -37.674,
+    "tool_calls": -20.69,
+    "tool_result_text_bytes": 7.293,
+    "skill_read_bytes": null,
+    "skill_read_calls": null,
+    "task_tool_result_text_bytes": 15.017,
+    "model_calls": -16.667,
+    "estimated_cost_usd": 1.012,
+    "elapsed_seconds": -14.097
+  },
+  "paired": [
+    {
+      "pair": 1,
+      "savings_percent": {
+        "final_words": 9.184,
+        "prose_words": 9.184,
+        "output": 13.551,
+        "input": 0.685,
+        "cacheRead": -57.576,
+        "cacheWrite": null,
+        "total_tokens": -35.519,
+        "input_context_tokens": -40.167,
+        "tool_calls": -10.0,
+        "tool_result_text_bytes": 7.975,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 31.468,
+        "model_calls": -16.667,
+        "estimated_cost_usd": 3.07,
+        "elapsed_seconds": -22.189
+      }
+    },
+    {
+      "pair": 2,
+      "savings_percent": {
+        "final_words": 4.808,
+        "prose_words": 4.808,
+        "output": -38.573,
+        "input": 7.044,
+        "cacheRead": -105.882,
+        "cacheWrite": null,
+        "total_tokens": -53.643,
+        "input_context_tokens": -54.846,
+        "tool_calls": -40.0,
+        "tool_result_text_bytes": 16.735,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 16.735,
+        "model_calls": -33.333,
+        "estimated_cost_usd": -19.883,
+        "elapsed_seconds": -33.545
+      }
+    },
+    {
+      "pair": 3,
+      "savings_percent": {
+        "final_words": 27.358,
+        "prose_words": 27.358,
+        "output": 10.288,
+        "input": 37.98,
+        "cacheRead": -71.642,
+        "cacheWrite": null,
+        "total_tokens": -13.444,
+        "input_context_tokens": -15.655,
+        "tool_calls": -11.111,
+        "tool_result_text_bytes": -8.041,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -8.041,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 20.171,
+        "elapsed_seconds": 21.268
+      }
+    }
+  ],
+  "definitions": {
+    "savings": "100 * (baseline sum - laconic sum) / baseline sum; negative means increase",
+    "total_tokens": "input + output + cacheRead + cacheWrite summed once per completed assistant message; reasoning is already output",
+    "estimated_cost_usd": "sum of Pi usage.cost.total metadata; catalog-based estimate, not billed/subscription cost",
+    "input_context": "input + cacheRead + cacheWrite; repeated context counted as the provider reports it",
+    "words": "regex word count; prose includes all assistant text, not reasoning/code tool arguments",
+    "tool_bytes": "UTF-8 text content bytes; excludes envelopes, images and tool-call arguments; not token counts",
+    "tool_efficiency": "independent acceptance checks passed / tool-result bytes * 1000; meaningful only for this identical task",
+    "artifact_policy": "non-streaming message_end events; reasoning/signatures omitted, temporary paths replaced"
+  }
+}

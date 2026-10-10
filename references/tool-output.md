@@ -2,6 +2,12 @@
 
 The goal is to **return enough evidence for the next decision**, not to blindly make every result short. Tool results typically become model **input/context** tokens. Do not confuse these with final-answer output tokens.
 
+### Loading overhead
+
+The core skill is intentionally small. If `/skill:laconic` or another host has already inserted its instructions into context, do not read `SKILL.md` again. Registering a skill's name/description alone is not the same as loading its full instructions: load the core once when needed. Do not load this playbook for routine coding tasks.
+
+Count instruction injection and any reads in E2E usage. Less tool output does not prove net token savings: repeated context and additional model calls can outweigh the reduction. Compare correctness and all user-facing prose as well as final answers. Avoid redundant progress reports, but report consequential blockers and respect requested updates.
+
 ### Before calling a tool
 
 1. **Define the needed evidence.** Ask: What specific fact, file, symbol, error, or decision must this call establish?
@@ -13,8 +19,8 @@ The goal is to **return enough evidence for the next decision**, not to blindly 
 ### When reading results
 
 - **Search/find:** Return matching paths, locations, and bounded snippets. Expand only the relevant matches.
-- **File reads:** Read the relevant function, section, or line range, not the entire repository or log.
-- **Tests/builds:** Keep exit status, failing test names, assertion messages, stack trace frames needed for diagnosis, and a short pass/fail summary. Avoid thousands of passing test lines. Do not hide a failure behind `|| true` or a pipeline that discards its exit code.
+- **File reads:** Read a known small relevant file directly once; avoid an inventory command merely to confirm a supplied path. For large files, read the relevant function, section, or line range, not the entire repository or log. Follow project-required discovery and coverage checks.
+- **Tests/builds:** Prefer a runner's quiet mode when it still reports counts, failures, and warnings. Keep existing tests; add missing regressions rather than replacing the suite to reduce output. Keep exit status, failing test names, assertion messages, stack trace frames needed for diagnosis, and a short pass/fail summary. Avoid thousands of passing test lines. Do not hide a failure behind `|| true` or a pipeline that discards its exit code.
 - **Bash/logs:** Limit output at the command or tool layer. A log tail can help, but errors may be at the beginning or middle; search the saved log when the tail lacks the cause.
 - **Git/diffs:** Get changed file names first, then relevant hunks. Preserve patch context when editing or reviewing a change.
 - **JSON/MCP/API:** Ask for the fields needed for the decision, use pagination, and keep stable identifiers and status/error fields. Do not strip schema-required fields or change data semantics.

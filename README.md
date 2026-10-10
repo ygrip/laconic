@@ -51,6 +51,19 @@ Inspired by plain-language ideas behind [ASD-STE100](https://www.asd-ste100.org/
 | Tool-result interception | **Not built in.** Requires a host hook or extension. |
 | Savings | Not guaranteed. Measure across equivalent tasks and include follow-up calls. |
 
+### Measured Pi E2E comparison
+
+We tested the original skill and two optimizations in **18 actual Pi sessions**. All solutions passed the independent fixture checks. The selected compact skill is **69.6% smaller** than the original.
+
+Against its matched no-skill baseline, the compact skill produced:
+
+- **15.9% fewer words**, **11.7% fewer output tokens**, and **14.7% fewer tool-result bytes**.
+- Outcome-first replies in **3/3** runs versus **0/3** baseline runs, retaining causes, changes, verification, and limitations.
+- **3.3% lower Pi catalog-estimated cost**—not measured provider billing.
+- **11.0% more total tokens** after input/cache overhead. **The net token-saving goal was not met.**
+
+These small, single-task experiments do not establish general savings. Read the [optimization report](docs/pi-e2e-optimization.md), [original unfavorable results](docs/pi-e2e-comparison.md), and [reproduction instructions](benchmarks/pi-e2e/README.md). All tested revisions and actual outputs are retained.
+
 ### Optional Pi tool-result limits
 
 For automatic model-facing caps, pair the skill with the independent [pi-output-limits](https://pi.dev/packages/pi-output-limits) extension:
@@ -84,8 +97,13 @@ laconic/
 │   └── logo.png                          # Helmet + Laconic wordmark
 ├── examples/
 │   └── pi-output-limits.settings.json
-└── references/
-    └── tool-output.md                    # Expanded playbook, loaded as needed
+├── references/
+│   └── tool-output.md                    # Expanded playbook, loaded as needed
+├── docs/
+│   ├── pi-e2e-comparison.md              # Original measured comparison
+│   └── pi-e2e-optimization.md            # Tested optimizations and limitations
+└── benchmarks/
+    └── pi-e2e/                           # Reproducible harness and actual E2E evidence
 ```
 
 ## License

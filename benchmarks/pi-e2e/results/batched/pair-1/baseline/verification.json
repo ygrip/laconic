@@ -1,0 +1,189 @@
+{
+  "acceptance_exit_code": 0,
+  "acceptance": [
+    {
+      "name": "empty",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "streaming",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "tool result",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "unsuccessful",
+      "passed": true,
+      "actual": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 0,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "missing usage",
+      "passed": true,
+      "actual": {
+        "calls": 1,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      },
+      "expected": {
+        "calls": 1,
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 0
+      }
+    },
+    {
+      "name": "partial usage",
+      "passed": true,
+      "actual": {
+        "calls": 1,
+        "input": 0,
+        "output": 7,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 7
+      },
+      "expected": {
+        "calls": 1,
+        "input": 0,
+        "output": 7,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 7
+      }
+    },
+    {
+      "name": "cache and reasoning",
+      "passed": true,
+      "actual": {
+        "calls": 1,
+        "input": 11,
+        "output": 9,
+        "cacheRead": 30,
+        "cacheWrite": 4,
+        "totalTokens": 54
+      },
+      "expected": {
+        "calls": 1,
+        "input": 11,
+        "output": 9,
+        "cacheRead": 30,
+        "cacheWrite": 4,
+        "totalTokens": 54
+      }
+    },
+    {
+      "name": "accepted stops",
+      "passed": true,
+      "actual": {
+        "calls": 3,
+        "input": 6,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 6
+      },
+      "expected": {
+        "calls": 3,
+        "input": 6,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "totalTokens": 6
+      }
+    },
+    {
+      "name": "CLI fixture with blank lines",
+      "passed": true,
+      "exit_code": 0,
+      "actual": {
+        "calls": 2,
+        "input": 150,
+        "output": 35,
+        "cacheRead": 50,
+        "cacheWrite": 10,
+        "totalTokens": 245
+      },
+      "expected": {
+        "calls": 2,
+        "input": 150,
+        "output": 35,
+        "cacheRead": 50,
+        "cacheWrite": 10,
+        "totalTokens": 245
+      }
+    }
+  ],
+  "acceptance_stderr": "",
+  "suite_exit_code": 0,
+  "suite_output": "test_cli_ignores_blank_lines (test_usage_summary.UsageTests.test_cli_ignores_blank_lines) ... ok\ntest_completed_messages_sum_only_usage_components (test_usage_summary.UsageTests.test_completed_messages_sum_only_usage_components) ... ok\ntest_non_completed_events_are_ignored (test_usage_summary.UsageTests.test_non_completed_events_are_ignored) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.026s\n\nOK\n"
+}

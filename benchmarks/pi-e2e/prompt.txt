@@ -1,0 +1,10 @@
+Fix the Pi session-usage summarizer in usage_summary.py. This is a dogfood task: the tool will be used to compare agent sessions, so double-counting would invalidate the comparison.
+
+Requirements:
+- Count only records with type=message_end whose message has role=assistant and stopReason=stop, toolUse, or length. Ignore streaming updates, tool results, pending messages, errors, and aborted messages.
+- Sum input, output, cacheRead, and cacheWrite from each counted message's usage; missing fields count as zero. Count a completed assistant message even if usage is absent.
+- Return calls, input, output, cacheRead, cacheWrite, and totalTokens. Compute totalTokens as input + output + cacheRead + cacheWrite. Do not add reasoning separately: it is already included in output. Do not trust a supplied totalTokens field.
+- Keep the existing command-line interface: python3 usage_summary.py session.jsonl prints one JSON object. Ignore blank lines. Input records are JSON objects with nonnegative integer usage fields when present.
+- Add regression tests, run the test suite, and check the CLI against session.jsonl.
+
+Explain the cause, what changed, verification results, and any remaining limitations. Do not claim live-provider or production verification from this fixture.
