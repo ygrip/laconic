@@ -1,0 +1,12 @@
+{
+  "name": "@ygrip/laconic",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Portable, recoverable tool-result optimization for agent harnesses",
+  "bin": {"laconic": "./bin/laconic.mjs"},
+  "engines": {"node": ">=20"},
+  "scripts": {"test": "node --test tests/*.test.mjs", "check": "node --check runtime/core/engine.mjs && node --check runtime/mcp/gateway.mjs && node --check bin/laconic.mjs"},
+  "files": ["bin/", "runtime/", "README.md", "SKILL.md", "LICENSE", "docs/"],
+  "license": "MIT"
+}
