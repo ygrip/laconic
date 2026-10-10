@@ -1,0 +1,63 @@
+# Tool-output optimization: detailed playbook
+
+The goal is to **return enough evidence for the next decision**, not to blindly make every result short. Tool results typically become model **input/context** tokens. Do not confuse these with final-answer output tokens.
+
+### Before calling a tool
+
+1. **Define the needed evidence.** Ask: What specific fact, file, symbol, error, or decision must this call establish?
+2. **Use server-side selection first.** Prefer structured fields, query filters, `limit`/`page_size`, targeted file ranges, and repository scopes over fetching everything and trimming later.
+3. **Prefer smallest sufficient representation.** Examples: `git status --short` rather than a full status report; `git diff --stat` before requesting a narrow diff; `rg -n 'pattern' relevant/path` instead of dumping every file; targeted JSON fields instead of full API responses.
+4. **Do not repeat identical calls.** Reuse already returned identifiers, excerpts, and evidence. Re-fetch only if it is incomplete or stale.
+5. **Choose a response budget appropriate to the task.** Start small for discovery, expand when necessary for debugging or verification. One narrow follow-up is better than a large unrelated dump.
+
+### When reading results
+
+- **Search/find:** Return matching paths, locations, and bounded snippets. Expand only the relevant matches.
+- **File reads:** Read the relevant function, section, or line range, not the entire repository or log.
+- **Tests/builds:** Keep exit status, failing test names, assertion messages, stack trace frames needed for diagnosis, and a short pass/fail summary. Avoid thousands of passing test lines. Do not hide a failure behind `|| true` or a pipeline that discards its exit code.
+- **Bash/logs:** Limit output at the command or tool layer. A log tail can help, but errors may be at the beginning or middle; search the saved log when the tail lacks the cause.
+- **Git/diffs:** Get changed file names first, then relevant hunks. Preserve patch context when editing or reviewing a change.
+- **JSON/MCP/API:** Ask for the fields needed for the decision, use pagination, and keep stable identifiers and status/error fields. Do not strip schema-required fields or change data semantics.
+- **Security/incident reviews:** Do not omit security warnings, data-loss risks, or critical findings merely to meet a token budget.
+
+### Large results and recovery
+
+If a result exceeds the budget, prefer a host/tool-level mechanism that:
+
+1. Keeps the critical evidence and error state.
+2. Limits the **model-facing** text before it enters context.
+3. Retains full output in an access-controlled file or source system when possible.
+4. Provides a clear retrieval pointer (file, line offset, page token, or query) and notes that the result is incomplete.
+5. Allows targeted expansion when missing details are necessary.
+
+Never pretend a truncated result was exhaustive. Never invent omitted content. Redact secrets before storing logs, and follow local retention rules. **Do not merely summarize a large tool response in your final answer:** by then, the model has already paid to receive the large result.
+
+### Examples of narrow requests
+
+```bash
+# Identify changes before reading patch content
+git status --short
+git diff --stat
+git diff -- src/parser.ts
+
+# Search for the specific failure or symbol
+rg -n 'ProviderUsage|usageTotal|ERROR' src test
+
+# Preserve test exit status while displaying only useful log lines
+npm test > /tmp/agent-test.log 2>&1
+status=$?
+tail -n 80 /tmp/agent-test.log
+exit "$status"
+```
+
+Treat these as illustrative patterns. Use commands and paths appropriate to the project, and avoid putting sensitive logs in publicly readable paths.
+
+### Pi integration (implementation, not just prompting)
+
+If running Pi, a `tool_result` extension can cap model-facing tool text *before* the next model call. For an existing implementation, use `pi-output-limits`; configure caps in `~/.pi/agent/settings.json` (global) or `.pi/settings.json` (project). Installing it with default settings does **not** reduce limits: change its `outputLimits` values. The example configuration is at `examples/pi-output-limits.settings.json` within the Laconic repository; **merge** its `outputLimits` block into your existing settings, do not replace the entire file.
+
+- Start conservatively: allow more content for `read`, less for noisy `bash` output.
+- Preserve full-result recovery pointers; do not treat truncation as a source of truth.
+- Keep error flags and exit status intact.
+- Be aware that re-reading truncated output can negate token savings.
+- This skill can guide tool calls, but cannot enforce hard caps on its own. The Pi extension is optional and installed separately.

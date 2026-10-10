@@ -1,0 +1,23 @@
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Temporary files and local caches
+*.log
+*.tmp
+.cache/
+node_modules/
+dist/
+build/
+.env
+.env.*
+!.env.example
+
+# Python tooling (if used to maintain assets)
+__pycache__/
+.venv/
+.pytest_cache/

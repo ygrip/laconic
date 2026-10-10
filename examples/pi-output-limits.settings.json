@@ -1,0 +1,23 @@
+{
+  "outputLimits": {
+    "maxLines": 350,
+    "maxBytes": 16384,
+    "tools": {
+      "bash": {
+        "maxLines": 160,
+        "maxBytes": 8192
+      },
+      "grep": {
+        "maxLines": 160,
+        "maxBytes": 8192
+      },
+      "read": {
+        "maxLines": 300,
+        "maxBytes": 16384
+      }
+    },
+    "tailTools": [
+      "bash"
+    ]
+  }
+}
