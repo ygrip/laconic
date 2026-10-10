@@ -2,14 +2,14 @@
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { optimizeText } from '../core/engine.mjs';
-import { readResult } from '../core/store.mjs';
+import { recoverText, RECOVERY_SCHEMA, RECOVERY_DESCRIPTION } from '../core/store.mjs';
 import { loadPolicy } from '../core/config.mjs';
 
 const RECOVERY = 'laconic_read_result';
 const recoveryTool = {
   name: RECOVERY,
-  description: 'Recover lines from a prior tool result shortened by Laconic, by recovery ID.',
-  inputSchema: {type:'object', properties:{id:{type:'string'},from:{type:'integer',minimum:1},count:{type:'integer',minimum:1,maximum:500}},required:['id']}
+  description: RECOVERY_DESCRIPTION,
+  inputSchema: RECOVERY_SCHEMA
 };
 const send = obj => process.stdout.write(JSON.stringify(obj)+'\n');
 export function createGateway({command,args=[],cwd=process.cwd(),spawnChild=spawn,policy}={}) {
@@ -41,9 +41,8 @@ export function createGateway({command,args=[],cwd=process.cwd(),spawnChild=spaw
     if (!message || typeof message !== 'object' || Array.isArray(message)) { child.stdin.write(line+'\n'); return; }
     if (message.method==='tools/call' && message.params?.name === RECOVERY && recoveryNameAvailable && Object.hasOwn(message,'id')) {
       try {
-        const result=await readResult(message.params.arguments?.id,{
-          from:message.params.arguments?.from??1,count:message.params.arguments?.count??100});
-        send({jsonrpc:'2.0',id:message.id,result:{content:[{type:'text',text:`Lines ${result.from}-${result.to}/${result.totalLines}\n${result.text}`}]}});
+        const {text}=await recoverText(message.params.arguments ?? {});
+        send({jsonrpc:'2.0',id:message.id,result:{content:[{type:'text',text}]}});
       } catch (e) {
         send({jsonrpc:'2.0',id:message.id,result:{isError:true,content:[{type:'text',text:`Recovery failed: ${e.message}`}]}});
       }

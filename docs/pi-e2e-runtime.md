@@ -1,5 +1,54 @@
 # Native runtime: Pi benchmark summary
 
+## v2 (current): review-quality, failure groups and contextual recovery
+
+**24 sessions, 3 workflows, 4 arms, 2 pairs; all 224/224 independent checks passed. Every review session found all 6 seeded defects (48/48).** Same Pi 1.1.0, `openai-codex/gpt-6-sol`, medium thinking, isolation and arm-order reversal as v1. Runtime arms used an explicit task profile: `review` for the review workflow, `implementation` otherwise.
+
+New **review workflow** (measures what matters for reviews: found defects, not bytes). A small committed Python package with **six seeded defects**: three surface only as `FAIL` lines buried in a 63 KB check log behind 200 repeated telemetry `ERROR` lines; three are visible only in source (unused reserved-path list, substring role check, mutable default cache). Forty correct generated vendor adapters add realistic search/read surface. The agent writes `findings.json`; a hidden scorer matches each seeded defect by file plus keyword. Recall per session and reported-finding counts are published.
+
+| Review workflow, sums of 2 sessions | Baseline | Skill | Runtime | Both |
+| --- | ---: | ---: | ---: | ---: |
+| Seeded defects found | 12/12 | 12/12 | 12/12 | 12/12 |
+| Total tokens | 297,308 | 572,760 | 147,989 | 274,296 |
+| Tool-result bytes | 142,120 | 166,803 | 61,234 | 80,969 |
+| Model calls | 17 | 26 | 19 | 25 |
+| Recovery calls | 0 | 0 | 0 | 0 |
+| Pi elapsed seconds | 78.8 | 122.1 | 82.5 | 138.4 |
+| Catalog-estimated cost, USD | 0.1826 | 0.2804 | 0.1360 | 0.1972 |
+
+| Noisy-log triage, sums of 2 sessions | Baseline | Skill | Runtime | Both |
+| --- | ---: | ---: | ---: | ---: |
+| Independent checks | 22/22 | 22/22 | 22/22 | 22/22 |
+| Total tokens | 210,749 | 224,679 | 73,826 | 87,928 |
+| Tool-result bytes | 94,428 | 104,463 | 17,879 | 18,821 |
+| Model calls | 16 | 16 | 18 | 18 |
+| Recovery calls (bytes) | 0 | 0 | 2 (798) | 2 (692) |
+| Pi elapsed seconds | 57.5 | 58.6 | 78.9 | 73.2 |
+| Catalog-estimated cost, USD | 0.1339 | 0.1507 | 0.0797 | 0.0755 |
+
+Short usage repair (no eligible output to filter; 18/18 checks in every arm): baseline 37,812 tokens, skill 48,088, runtime 46,793, both 48,780. Zero filtered results: differences there are run-to-run variation and skill overhead, not filtering.
+
+### What changed and what it did
+
+- **Failure groups.** On the review log the v1 engine showed **0/3** `FAIL` lines (the telemetry flood consumed its first-40-errors budget); v2 shows **3/3 plus the summary in 3.1 KB instead of 8.2 KB**. On the triage log v1 omitted the incident line; v2 includes it in the first excerpt (3.8 KB).
+- **Review profile.** Runtime cut review tokens **50.2%** and tool bytes **56.9%** with **no recall loss and zero recovery calls**; only the noisy check log was shortened. Search output, reads and diffs passed through.
+- **Contextual recovery.** Each triage recovery was one `query="INCIDENT"` call returning ~400 bytes, instead of v1-style numeric range reads. The prompt explicitly instructs recovery of the incident record when output is partial, so the agents recovered even though the line was already visible; the extra round trip is therefore partly a prompt artifact. Runtime-only triage still used **65.0% fewer tokens**, with **37.3% more elapsed time**.
+- **Found during this run, fixed before the measured run:** an aborted first attempt showed `for f in ...; do nl -ba "$f"; done` source dumps classified as shell and shortened under the review profile, which forced two full-range recoveries. `nl`/`bat`/`less`/`more` are now file reads, and mostly line-numbered output is never shortened. The aborted sessions are excluded from all totals.
+
+### Unfavorable result: the review-depth skill made reviews more expensive
+
+The skill's new "compress the output, never the investigation" rules did not change recall here (baseline already found 6/6), but skill-only review sessions used **92.6% more tokens**, **53% more model calls** and **55% more time** than baseline: the agents read every generated adapter and probed edge cases more exhaustively. Skill + runtime recovered most of the token cost (7.7% fewer tokens than baseline) but remained 75.6% slower. The original 5-vs-6 PR observation that motivated the rule could not be reproduced on this fixture, so the benefit is unproven while the cost is measured. Treat the depth rule as a quality guard to evaluate on harder review sets, not as a saving.
+
+### Limitations
+
+Two pairs per arm and task, one model, synthetic fixtures, unblinded design, variable provider caching/timing. Recall is keyword-scored against seeded defects; extra findings are counted but not judged. Catalog cost is not billing. Elapsed time includes provider latency and is not isolated from inference variance.
+
+Aggregate, per-task and paired measurements: [native-runtime-v2.json](benchmark-summaries/native-runtime-v2.json).
+
+---
+
+## v1 (previous engine)
+
 **Runtime filtering reduced context on the noisy-log task, but did not establish a speedup.** All 16 sessions passed **160/160 independent acceptance checks**; saved solutions also passed local re-verification.
 
 Only summaries are published. Benchmark scripts, raw sessions, generated solutions, recovery logs and execution artifacts remain local and are intentionally excluded from Git.

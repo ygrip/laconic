@@ -66,9 +66,13 @@ These small, single-task experiments do not establish general savings. Read the 
 
 ### Measured native runtime comparison
 
-A fresh **16-session, four-arm Pi experiment** compared baseline, skill, runtime, and both across short repair and noisy-log workflows. All **160/160 independent checks passed**.
+The current engine was re-measured in **24 Pi sessions** (baseline, skill, runtime, both × review, noisy-log triage, short repair). **All 224/224 independent checks passed, and every review session found all 6 seeded defects.**
 
-On the noisy-log workflow, runtime-only used **66.5% fewer total tokens** and **80.6% fewer tool-result bytes**; skill + runtime used **63.8% fewer tokens** and **83.2% fewer bytes**, including recovery. However, elapsed time increased **63.8%** and **18.8%**, respectively. Short repair sessions had no eligible results to filter and did not establish a general saving. These are small synthetic experiments, not provider-billing or production claims. See the [runtime results, failed attempts, and limitations](docs/pi-e2e-runtime.md).
+- **Review:** runtime used **50.2% fewer tokens** and **56.9% fewer tool bytes** with no recall loss and zero recovery calls.
+- **Noisy-log triage:** runtime used **65.0% fewer tokens** and **81.1% fewer bytes**, but took **37.3% longer**; the single query-based recovery per session was partly prompted by the task wording.
+- **Unfavorable:** the skill's new review-depth rule made skill-only reviews use **92.6% more tokens** and **55% more time**, without a measurable recall gain on this fixture.
+
+Small synthetic samples; not provider-billing or production claims. See [results, method and limitations](docs/pi-e2e-runtime.md).
 
 ### Optional Pi tool-result limits
 
@@ -122,6 +126,14 @@ Laconic now includes an **optional, deterministic runtime** for filtering model-
 - **OpenCode:** MCP gateway only; native setup refuses the unavailable V2 tool-hook API.
 - **Codex:** observation-only native hook; no unsupported result-rewrite claim.
 - **MCP stdio:** optional gateway for tools routed through the proxy, with a recovery tool.
+
+What the engine keeps and how it recovers (goal: lower total task cost and time, not the smallest first response):
+
+- **Distinct failure groups:** diagnostics are grouped by normalized signature; every group gets a representative line plus cause context before head/tail filler, so one flooding error cannot hide a rarer failure. Output starts with a group index and reports `groups shown/total`.
+- **Lossless search index:** `rg`/`grep`/path-list output becomes a complete file → match-count → line-number index plus round-robin snippets; if the index cannot fit, the original passes through.
+- **Contextual recovery:** `laconic_read_result` and `laconic show` accept `query` (text or regex) with surrounding `context`, and `around=N`, not just numeric ranges.
+- **Task profiles:** `review` (search, reads and diffs untouched; only repetitive logs compressed), `implementation` (default), `debugging` (wider budgets and context), `documentation`. Set `profile` in config or `LACONIC_PROFILE`.
+- **Cost signals:** `laconic stats` reports recovery rate, recovery bytes and extra round trips per category/profile, not just bytes saved.
 
 From a checkout (Node.js 20+):
 

@@ -1,6 +1,6 @@
 /** Pi's model-facing tool_result hook. No Pi imports are needed for interception. */
 import { optimizeText } from '../core/engine.mjs';
-import { readResult } from '../core/store.mjs';
+import { recoverText, RECOVERY_SCHEMA, RECOVERY_DESCRIPTION } from '../core/store.mjs';
 import { loadPolicy } from '../core/config.mjs';
 
 // Pi 1.1.0's built-in bash has separate display text and raw programmatic output.
@@ -37,18 +37,12 @@ export default async function laconicPi(pi) {
   if (policy.enabled && policy.recovery.enabled) {
       pi.registerTool({
         name: 'laconic_read_result', label: 'Laconic result recovery',
-        description: 'Read more lines from a tool result shortened by Laconic. Use the lr_ recovery ID.',
-        parameters: {
-          type: 'object', properties: {
-            id: {type:'string', pattern:'^lr_[a-f0-9]{32}$'},
-            from: {type:'integer', minimum:1},
-            count: {type:'integer', minimum:1, maximum:500}
-          }, required:['id'], additionalProperties:false
-        },
+        description: RECOVERY_DESCRIPTION,
+        parameters: RECOVERY_SCHEMA,
         async execute(_toolCallId, params) {
           try {
-            const found = await readResult(params.id, {from:params.from ?? 1, count:params.count ?? 100});
-            return {content:[{type:'text', text:`Lines ${found.from}-${found.to}/${found.totalLines}\n${found.text}`}], details:undefined};
+            const {text} = await recoverText(params);
+            return {content:[{type:'text', text}], details:undefined};
           } catch (error) { throw new Error(`Laconic recovery failed: ${error.message}`); }
         }
       });

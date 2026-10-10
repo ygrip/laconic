@@ -62,22 +62,54 @@ Create `~/.config/laconic/config.json` or set `LACONIC_CONFIG=/absolute/path/con
 ```json
 {
   "enabled": true,
+  "profile": "implementation",
   "minBytes": 6000,
   "budgets": {"shell": 8192, "test": 12288, "search": 8192},
-  "allowedCategories": ["shell", "test", "search"],
-  "recovery": {"enabled": true, "maxStoredBytes": 2000000, "retentionHours": 24}
+  "diagnostics": {"maxGroups": 24, "context": 2},
+  "recovery": {"enabled": true, "maxStoredBytes": 2000000, "retentionHours": 24, "stats": true}
 }
 ```
 
-The defaults are conservative. Code reads, git diffs, unknown, structured, multimodal, and small results pass through. Shell output from `git diff`, `git show`, and file reads also passes through. The filter retains bounded head/tail, diagnostic excerpts, result counts, and a recovery ID; it **does not guarantee** every error is included in one excerpt.
+### Task profiles
+
+`profile` (or the `LACONIC_PROFILE` environment variable, which takes precedence) picks starting budgets and categories; explicit `budgets`, `allowedCategories` and `diagnostics` still override it. The aim is lower total task cost and completion time, not the smallest first response.
+
+| Profile | Compressed categories | Intent |
+| --- | --- | --- |
+| `review` | shell, test | Preserve search coverage, file reads and diffs whole; compress repetitive logs only. |
+| `implementation` (default) | shell, test, search | Moderate compression; search keeps a lossless index. |
+| `debugging` | shell, test, search | Larger budgets (16–20 KB), up to 48 failure groups, 4 lines of cause context. |
+| `documentation` | shell, test | Primarily a prose concern; compress only noisy command logs. |
+
+### What the excerpt keeps
+
+- **Distinct failure groups.** Diagnostic lines are grouped by a normalized signature (numbers, hashes, timestamps and quoted values collapsed). Each excerpt starts with a header listing every group's first line, count and last line, then reserves space for one representative per group plus its cause context (the line before, and `context` lines after: stack frames, `Caused by:`), before the head, tail or repeated occurrences. A flood of one repeated error can no longer push a different, rarer failure out of the excerpt. The footer reports `Diagnostic groups shown: shown/total`.
+- **Lossless search index.** Recognized `rg`/`grep -n`, `rg --heading` and path-list output is replaced by an index listing every file with its match count and **every matching line number** (compressed into ranges), followed by round-robin snippets (each file's first match before any file's second). If line numbers do not fit, every file is still listed; if even the file list does not fit, the original output passes through. Unrecognized search output falls back to the log excerpt.
+
+The defaults are conservative. Code reads, git diffs, unknown, structured, multimodal, and small results pass through. Shell output from `git diff`, `git show`, and file reads (`cat`, `sed`, `head`, `tail`, `nl`, `bat`, `less`, `more`) also passes through, as does any output that is mostly a line-numbered source listing (`nl`/`cat -n` tabs or `bat` bars), whichever command produced it. The filter retains distinct failure groups with cause context, summaries, bounded head/tail and a recovery ID; when there are more groups than fit, the header and footer say so. It **does not guarantee** every occurrence is in the excerpt.
 
 `recovery.enabled=true` stores full tool output **on the user's machine** before shortening it in an owner-only directory at `~/.cache/laconic/results/` (override with `LACONIC_STORE_DIR`). Files use mode 0600, random opaque IDs, a 2 MB per-result default cap, and best-effort time-based cleanup. On POSIX systems, existing store directories must be owner-only (0700), current-user-owned, and not symlinks; recovery rejects symlinked or non-private files. Windows ACL isolation has not been verified; POSIX mode bits are not a Windows privacy guarantee. Disable recovery on Windows unless you separately enforce and validate private ACLs. Stored text is the complete result **received from the host**, not output already omitted by an upstream tool or harness. **Logs may contain credentials or other private content.** Turn recovery off for sensitive data; this also disables lossy filtering. No remote upload is performed. This is not encryption, redaction, or guaranteed secure deletion. The cap is per result, not an aggregate disk quota; high-volume sessions can retain many files until cleanup. Use a dedicated private store and external disk/retention controls where required.
 
-Recover a range:
+Recover by query (preferred: returns every matching line with surrounding context, so the model does not need to guess ranges), around a line, or by range:
 
 ```bash
+node bin/laconic.mjs show lr_0123456789abcdef0123456789abcdef --query 'customer=' --context 3
+node bin/laconic.mjs show lr_0123456789abcdef0123456789abcdef --query 'E\d{4}' --regex --limit 50
+node bin/laconic.mjs show lr_0123456789abcdef0123456789abcdef --around 463 --context 5
 node bin/laconic.mjs show lr_0123456789abcdef0123456789abcdef --from 100 --count 80
 ```
+
+The `laconic_read_result` tool accepts the same `query`, `regex`, `context`, `limit`, `around`, `from` and `count` parameters.
+
+### Recovery statistics
+
+With `recovery.stats` (default on), the store directory also keeps `stats.jsonl`: content-free events (recovery ID, category, profile, byte counts, recovery mode). It never contains tool output and is reset beyond 1 MB.
+
+```bash
+node bin/laconic.mjs stats --since-hours 24
+```
+
+It reports optimized results, recovery calls, recovery rate (per category and profile), recovery bytes, net bytes saved after recovery, and the number of recovery round trips (each usually costs an additional model call). A high recovery rate for a category means its budget is too tight for your workload.
 
 Missing IDs and results already removed by cleanup fail explicitly; time-based expiry is opportunistic, not a guaranteed deletion deadline. The model should not treat shortened output as exhaustive. A stored result may be unavailable after expiry, deletion or when the maximum store size is exceeded; in the latter case the original result is passed through.
 
