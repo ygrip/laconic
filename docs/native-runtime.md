@@ -88,7 +88,7 @@ npm test
 npm run check
 ```
 
-Tests cover routing, idempotent registration, recovery, unchanged critical shapes, permissions, symlinks, packaging, and a mock MCP stdio server including exit/spawn failures and recovery-name collisions. Provider sessions are separate: `benchmarks/pi-e2e` supports four arms (baseline, skill, runtime, both) and two workflows (usage repair and noisy-log triage plus repair), independent acceptance checks, tool-error/recovery counts, latency and cache-aware usage. See the [runtime report](pi-e2e-runtime.md); original benchmark reports remain untouched.
+Tests cover routing, idempotent registration, recovery, unchanged critical shapes, permissions, symlinks, packaging, and a mock MCP stdio server including exit/spawn failures and recovery-name collisions. A separate local benchmark measured four arms (baseline, skill, runtime, both) and two workflows (usage repair and noisy-log triage plus repair). Only its [summary report](pi-e2e-runtime.md) and aggregate/paired measurements are published; benchmark scripts, raw sessions and generated artifacts are intentionally excluded from Git.
 
 ## Design choices
 

@@ -62,7 +62,7 @@ Against its matched no-skill baseline, the compact skill produced:
 - **3.3% lower Pi catalog-estimated cost**—not measured provider billing.
 - **11.0% more total tokens** after input/cache overhead. **The net token-saving goal was not met.**
 
-These small, single-task experiments do not establish general savings. Read the [optimization report](docs/pi-e2e-optimization.md), [original unfavorable results](docs/pi-e2e-comparison.md), and [reproduction instructions](benchmarks/pi-e2e/README.md). All tested revisions and actual outputs are retained.
+These small, single-task experiments do not establish general savings. Read the [optimization report](docs/pi-e2e-optimization.md) and [original unfavorable results](docs/pi-e2e-comparison.md). Only reports and [measurement summaries](docs/benchmark-summaries/) are published; scripts and raw sessions remain local.
 
 ### Measured native runtime comparison
 
@@ -107,9 +107,10 @@ laconic/
 │   └── tool-output.md                    # Expanded playbook, loaded as needed
 ├── docs/
 │   ├── pi-e2e-comparison.md              # Original measured comparison
-│   └── pi-e2e-optimization.md            # Tested optimizations and limitations
-└── benchmarks/
-    └── pi-e2e/                           # Reproducible harness and actual E2E evidence
+│   ├── pi-e2e-optimization.md            # Tested optimizations and limitations
+│   ├── pi-e2e-runtime.md                 # Runtime results and latency limits
+│   └── benchmark-summaries/              # Aggregate and paired measurements
+└── runtime/                              # Optional runtime (benchmarks stay local)
 ```
 
 ## Native tool-result runtime (experimental)

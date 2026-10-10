@@ -1,3 +1,0 @@
-Fixed `usage_summary.py`. It previously counted assistant streaming and pending records, added reasoning to output again, and trusted the supplied `totalTokens`. It now counts only completed assistant `message_end` records with an allowed stop reason, sums the four usage fields, and computes the total from those fields. A completed message without usage still counts as a call.
-
-All 8 tests pass. The CLI check against `session.jsonl` returned `{"calls": 2, "input": 150, "output": 35, "cacheRead": 50, "cacheWrite": 10, "totalTokens": 245}`. Verification is limited to tests and this fixture; no live-provider or production check was performed.

@@ -1,3 +1,0 @@
-The summarizer counted assistant records before completion and used supplied token totals, which could double-count usage. `usage_summary.py` now counts only completed assistant `message_end` records with an allowed stop reason, sums the four usage fields, and computes `totalTokens` from those sums.
-
-The diagnostic log identified a stale-cache reconciliation failure for cedar, batch 463, with 17 lost calls; I recorded it in `incident.json`. All 7 tests pass. The CLI returned `{"calls": 2, "input": 150, "output": 35, "cacheRead": 50, "cacheWrite": 10, "totalTokens": 245}` for `session.jsonl`. Verification is limited to tests and the fixture, not a live provider or production session.

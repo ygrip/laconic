@@ -10,7 +10,7 @@ On **2026-10-10 UTC**, we ran **six real Pi CLI sessions: three baseline/Laconic
 
 Fresh workspaces/configs received identical files and task requirements. Both arms used `read,bash,edit,write`; extensions, MCP, global instructions, and discovered skills were disabled. Laconic alone was registered and explicitly activated through `/skill:laconic`. Order alternated across pairs. No tool-output limiting extension was used.
 
-All **six solutions passed 9/9 independent acceptance checks**, and all resulting test suites passed. Neither arm verified a live provider or production deployment. [Full methodology, formulas, scoring rubric and reproduction commands](../benchmarks/pi-e2e/README.md).
+All **six solutions passed 9/9 independent acceptance checks**, and all resulting test suites passed. Neither arm verified a live provider or production deployment. Aggregate and paired measurements are retained in the [summary](benchmark-summaries/initial.json). Benchmark execution files and raw sessions are intentionally not published.
 
 ## Measured totals
 
@@ -77,7 +77,7 @@ Here are the first sentences from pair 2, quoted without rewriting:
 
 > Fixed `usage_summary.py`.
 
-Read the complete [baseline final answer](../benchmarks/pi-e2e/results/initial/pair-2/baseline/final.md) and [Laconic final answer](../benchmarks/pi-e2e/results/initial/pair-2/laconic/final.md). All six final answers and all assistant prose are published, not just the favorable pair.
+These excerpts are retained from the local experiment; complete session outputs are intentionally not published.
 
 The rubric awards one point each for outcome first, concrete cause, identifiable changes, explicit verification, and preserved limitations. Every answer explained the cause, fix, tests/CLI results and fixture limitation. Baseline answers began with the cause; Laconic answers began with the fix.
 
@@ -92,16 +92,9 @@ The rubric awards one point each for outcome first, concrete cause, identifiable
 
 This is **unblinded author scoring**, not independent human evaluation or a validated clarity score. The improvement is specifically outcome-first presentation—not better correctness or proof that readers understand the answer faster. A cause-first answer can also be clear. Laconic pair 1 added progress prose, so final-only conciseness hides an increase in total prose.
 
-## Evidence and reproduction
+## Retained summary
 
-- [Exact task](../benchmarks/pi-e2e/prompt.txt), [starting fixture](../benchmarks/pi-e2e/fixture/), and [skill snapshot](../benchmarks/pi-e2e/results/initial/SKILL.md).
-- [Manifest/configuration and hashes](../benchmarks/pi-e2e/results/initial/manifest.json).
-- [All six per-run measurements](../benchmarks/pi-e2e/results/initial/metrics.json).
-- [Recomputed aggregates, pair percentages and tool breakdowns](../benchmarks/pi-e2e/results/initial/summary.json).
-- [Pair 1 transcripts/solutions](../benchmarks/pi-e2e/results/initial/pair-1/), [pair 2](../benchmarks/pi-e2e/results/initial/pair-2/), [pair 3](../benchmarks/pi-e2e/results/initial/pair-3/).
-- [Runner](../benchmarks/pi-e2e/run.py), [analysis script](../benchmarks/pi-e2e/analyze.py), and [harness tests](../benchmarks/pi-e2e/test_benchmark.py).
-
-Transcripts preserve completed messages, tool arguments/results, and usage. Streaming duplicates, private reasoning, opaque signatures and temporary absolute paths are omitted/replaced. Credentials are never copied into artifacts. These are actual sanitized E2E records, not fabricated examples.
+[Aggregate totals, paired percentages and metric definitions](benchmark-summaries/initial.json) are published. Scripts, raw sessions, generated solutions and execution logs remain local and are intentionally excluded from Git. The figures above summarize actual sessions, but this summary-only publication does not provide independently replayable transcript evidence.
 
 ## What this establishes—and what it does not
 
