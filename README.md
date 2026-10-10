@@ -106,6 +106,27 @@ laconic/
     └── pi-e2e/                           # Reproducible harness and actual E2E evidence
 ```
 
+## Native tool-result runtime (experimental)
+
+Laconic now includes an **optional, deterministic runtime** for filtering model-visible tool results without running an extra LLM. It is separate from the portable Markdown skill. The shared engine preserves recoverable evidence and passes through structured, multimodal, unknown, and unsafe-to-shorten results.
+
+- **Pi:** native `tool_result` extension, with recovery tool when supported.
+- **Claude Code:** schema-preserving `PostToolUse` hook for successful shell stdout.
+- **OpenCode V2:** native `execute.after` plugin.
+- **Codex:** observation-only native hook; no unsupported result-rewrite claim.
+- **MCP stdio:** optional gateway for tools routed through the proxy, with a recovery tool.
+
+From a checkout (Node.js 20+):
+
+```bash
+npm test
+node bin/laconic.mjs setup --harness pi --scope user
+node bin/laconic.mjs doctor
+node bin/laconic.mjs disable --harness pi --scope user
+```
+
+The proposed `npx @ygrip/laconic setup` command requires publishing the npm package separately; **this PR does not publish npm**. Read the [compatibility, configuration and security guide](docs/native-runtime.md) before enabling local hooks. Full results are stored in owner-only local files when recovery is enabled; this is not encryption or secret redaction. Native adapters and the proxy have unit/integration coverage, but live external harness/model compatibility and token savings remain unverified.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
