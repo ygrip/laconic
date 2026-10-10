@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "minBytes": 6000,
+  "budgets": {"shell": 8192, "test": 12288, "search": 8192},
+  "allowedCategories": ["shell", "test", "search"],
+  "recovery": {"enabled": true, "maxStoredBytes": 2000000, "retentionHours": 24}
+}
