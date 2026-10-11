@@ -5,7 +5,7 @@ import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { readResult, storeDirectory } from '../runtime/core/store.mjs';
+import { readStats, recoverText, storeDirectory } from '../runtime/core/store.mjs';
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const runtimeHome = process.env.LACONIC_HOME || join(homedir(), '.local', 'share', 'laconic');
@@ -22,6 +22,9 @@ const instructions=`Usage:
   laconic disable --harness pi|claude|opencode|codex [--scope project|user] [--project PATH]
   laconic doctor
   laconic show <lr_id> [--from N] [--count N]
+  laconic show <lr_id> --query TEXT [--regex] [--context N] [--limit N]
+  laconic show <lr_id> --around N [--context N]
+  laconic stats [--since-hours N]
   laconic proxy -- <mcp-server-command> [args...]
 
 Native hook installation modifies only explicitly selected harness configuration.
@@ -140,9 +143,14 @@ async function main(){
     console.log(JSON.stringify(installed,null,2));return;
   }
   if(command==='show'){
-    const id=process.argv[3];
-    const result=await readResult(id,{from:Number(option('--from',1)),count:Number(option('--count',100))});
-    console.log(`Lines ${result.from}-${result.to}/${result.totalLines}\n${result.text}`);return;
+    const params={id:process.argv[3],from:option('--from'),count:option('--count'),query:option('--query'),
+      regex:process.argv.includes('--regex'),context:option('--context'),around:option('--around'),limit:option('--limit')};
+    const {text}=await recoverText(params);
+    console.log(text);return;
+  }
+  if(command==='stats'){
+    const since=option('--since-hours');
+    console.log(JSON.stringify(await readStats({sinceHours:since===undefined?undefined:Number(since)}),null,2));return;
   }
   if(command==='proxy'){
     const {createGateway}=await import('../runtime/mcp/gateway.mjs');

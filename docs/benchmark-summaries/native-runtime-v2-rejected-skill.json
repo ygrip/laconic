@@ -1,0 +1,3156 @@
+{
+  "experiment": "native-runtime-v2: diagnostic groups, lossless search index, contextual recovery, task profiles, review-depth skill",
+  "manifest": {
+    "pi_version": "1.1.0",
+    "pairs": 2,
+    "arms": [
+      "baseline",
+      "laconic",
+      "runtime",
+      "both"
+    ],
+    "tasks": [
+      "review",
+      "log-triage",
+      "usage"
+    ],
+    "provider": "openai-codex",
+    "model": "gpt-6-sol",
+    "thinking": "medium",
+    "order": "odd pairs: requested arm order; even pairs: reverse order; tasks in requested order",
+    "isolation": "temporary cwd/config; no MCP/context/discovered skills/templates/themes; explicit silent startup observer in all arms; runtime hook and recovery only in runtime/both; four built-in tools plus recovery tool in runtime/both",
+    "runtime_policy": "explicit profile (auto; auto = review task -> review, others -> implementation), fresh local recovery store per run",
+    "skill_activation": "--no-skills --skill <SKILL>; /skill:laconic <identical task>",
+    "runtime_sha256": {
+      "runtime/adapters/claude.mjs": "b2c25e552a2d0c7a6873c79c95d00928f2a62623300e39b5daffa9ba48513705",
+      "runtime/adapters/codex.mjs": "9ab4b23853491623fc97681c85737dbfd4c78c8b40c016bc7d07e559002a8bca",
+      "runtime/adapters/pi.mjs": "9eb229d5b83ca6de7b894d7965ae4f45e7206ed9a973e56faa7dc2c7e7fc8578",
+      "runtime/core/config.mjs": "018f96ec89e3a7bc335098fad001f017a64488d02dd026049fd83933523cecbe",
+      "runtime/core/engine.mjs": "86a9cb68265d7a266ffaa2d28630d73dd8c88773715e1faaa07a19d1ffcba9b8",
+      "runtime/core/store.mjs": "ce8afda615a15507e163804267917cc636d33471d16e38a65ee17142f615bc90",
+      "runtime/mcp/gateway.mjs": "fadce1976cfb41a672cd301bc8eb98ceb811350a52b6445a4d764a01f0af415c"
+    },
+    "skill_sha256": "6b3b89a515cecb43f663caa23ade84c196b9dc41b1e9a8350658d1b90c1e96e9"
+  },
+  "arms": {
+    "baseline": {
+      "final_words": {
+        "sum": 491,
+        "mean": 81.83333333333333,
+        "median": 100.5
+      },
+      "prose_words": {
+        "sum": 491,
+        "mean": 81.83333333333333,
+        "median": 100.5
+      },
+      "output": {
+        "sum": 9922,
+        "mean": 1653.6666666666667,
+        "median": 1579.0
+      },
+      "input": {
+        "sum": 97931,
+        "mean": 16321.833333333334,
+        "median": 17115.0
+      },
+      "cacheRead": {
+        "sum": 438016,
+        "mean": 73002.66666666667,
+        "median": 86720.0
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "total_tokens": {
+        "sum": 545869,
+        "mean": 90978.16666666667,
+        "median": 105374.5
+      },
+      "input_context_tokens": {
+        "sum": 535947,
+        "mean": 89324.5,
+        "median": 103835.0
+      },
+      "tool_calls": {
+        "sum": 80,
+        "mean": 13.333333333333334,
+        "median": 11.0
+      },
+      "tool_result_text_bytes": {
+        "sum": 245708,
+        "mean": 40951.333333333336,
+        "median": 47214.0
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 245708,
+        "mean": 40951.333333333336,
+        "median": 47214.0
+      },
+      "model_calls": {
+        "sum": 45,
+        "mean": 7.5,
+        "median": 8.0
+      },
+      "estimated_cost_usd": {
+        "sum": 0.38268520000000006,
+        "mean": 0.06378086666666667,
+        "median": 0.066969
+      },
+      "elapsed_seconds": {
+        "sum": 199.563,
+        "mean": 33.2605,
+        "median": 30.698999999999998
+      },
+      "runtime_filtered_results": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "recovery_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "tool_errors": {
+        "sum": 3,
+        "mean": 0.5,
+        "median": 0.5
+      },
+      "recovery_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "acceptance_passed": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "acceptance_total": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "review_found": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_seeded": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_reported": {
+        "sum": 14,
+        "mean": 2.3333333333333335,
+        "median": 0.0
+      },
+      "verified": true
+    },
+    "laconic": {
+      "final_words": {
+        "sum": 421,
+        "mean": 70.16666666666667,
+        "median": 80.5
+      },
+      "prose_words": {
+        "sum": 421,
+        "mean": 70.16666666666667,
+        "median": 80.5
+      },
+      "output": {
+        "sum": 12554,
+        "mean": 2092.3333333333335,
+        "median": 1681.5
+      },
+      "input": {
+        "sum": 116557,
+        "mean": 19426.166666666668,
+        "median": 20226.0
+      },
+      "cacheRead": {
+        "sum": 716416,
+        "mean": 119402.66666666667,
+        "median": 90432.0
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "total_tokens": {
+        "sum": 845527,
+        "mean": 140921.16666666666,
+        "median": 112339.5
+      },
+      "input_context_tokens": {
+        "sum": 832973,
+        "mean": 138828.83333333334,
+        "median": 110658.0
+      },
+      "tool_calls": {
+        "sum": 92,
+        "mean": 15.333333333333334,
+        "median": 12.0
+      },
+      "tool_result_text_bytes": {
+        "sum": 289206,
+        "mean": 48201,
+        "median": 52231.5
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 289206,
+        "mean": 48201,
+        "median": 52231.5
+      },
+      "model_calls": {
+        "sum": 54,
+        "mean": 9,
+        "median": 8.0
+      },
+      "estimated_cost_usd": {
+        "sum": 0.5019372,
+        "mean": 0.0836562,
+        "median": 0.0753534
+      },
+      "elapsed_seconds": {
+        "sum": 243.744,
+        "mean": 40.623999999999995,
+        "median": 35.3835
+      },
+      "runtime_filtered_results": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "recovery_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "tool_errors": {
+        "sum": 11,
+        "mean": 1.8333333333333333,
+        "median": 2.0
+      },
+      "recovery_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "acceptance_passed": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "acceptance_total": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "review_found": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_seeded": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_reported": {
+        "sum": 16,
+        "mean": 2.6666666666666665,
+        "median": 0.0
+      },
+      "verified": true
+    },
+    "runtime": {
+      "final_words": {
+        "sum": 472,
+        "mean": 78.66666666666667,
+        "median": 97.5
+      },
+      "prose_words": {
+        "sum": 472,
+        "mean": 78.66666666666667,
+        "median": 97.5
+      },
+      "output": {
+        "sum": 9905,
+        "mean": 1650.8333333333333,
+        "median": 1555.5
+      },
+      "input": {
+        "sum": 73103,
+        "mean": 12183.833333333334,
+        "median": 10695.5
+      },
+      "cacheRead": {
+        "sum": 185600,
+        "mean": 30933.333333333332,
+        "median": 25664.0
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "total_tokens": {
+        "sum": 268608,
+        "mean": 44768,
+        "median": 36913.0
+      },
+      "input_context_tokens": {
+        "sum": 258703,
+        "mean": 43117.166666666664,
+        "median": 35384.0
+      },
+      "tool_calls": {
+        "sum": 76,
+        "mean": 12.666666666666666,
+        "median": 11.0
+      },
+      "tool_result_text_bytes": {
+        "sum": 91766,
+        "mean": 15294.333333333334,
+        "median": 8939.5
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 91766,
+        "mean": 15294.333333333334,
+        "median": 8939.5
+      },
+      "model_calls": {
+        "sum": 50,
+        "mean": 8.333333333333334,
+        "median": 9.0
+      },
+      "estimated_cost_usd": {
+        "sum": 0.282376,
+        "mean": 0.04706266666666667,
+        "median": 0.039862800000000004
+      },
+      "elapsed_seconds": {
+        "sum": 210.72899999999998,
+        "mean": 35.1215,
+        "median": 36.769
+      },
+      "runtime_filtered_results": {
+        "sum": 4,
+        "mean": 0.6666666666666666,
+        "median": 1.0
+      },
+      "recovery_calls": {
+        "sum": 2,
+        "mean": 0.3333333333333333,
+        "median": 0.0
+      },
+      "tool_errors": {
+        "sum": 3,
+        "mean": 0.5,
+        "median": 0.5
+      },
+      "recovery_bytes": {
+        "sum": 798,
+        "mean": 133,
+        "median": 0.0
+      },
+      "acceptance_passed": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "acceptance_total": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "review_found": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_seeded": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_reported": {
+        "sum": 16,
+        "mean": 2.6666666666666665,
+        "median": 0.0
+      },
+      "verified": true
+    },
+    "both": {
+      "final_words": {
+        "sum": 414,
+        "mean": 69,
+        "median": 87.0
+      },
+      "prose_words": {
+        "sum": 414,
+        "mean": 69,
+        "median": 87.0
+      },
+      "output": {
+        "sum": 10990,
+        "mean": 1831.6666666666667,
+        "median": 1533.5
+      },
+      "input": {
+        "sum": 79630,
+        "mean": 13271.666666666666,
+        "median": 7742.5
+      },
+      "cacheRead": {
+        "sum": 320384,
+        "mean": 53397.333333333336,
+        "median": 34688.0
+      },
+      "cacheWrite": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "total_tokens": {
+        "sum": 411004,
+        "mean": 68500.66666666667,
+        "median": 43964.0
+      },
+      "input_context_tokens": {
+        "sum": 400014,
+        "mean": 66669,
+        "median": 42430.5
+      },
+      "tool_calls": {
+        "sum": 75,
+        "mean": 12.5,
+        "median": 12.0
+      },
+      "tool_result_text_bytes": {
+        "sum": 113047,
+        "mean": 18841.166666666668,
+        "median": 9410.5
+      },
+      "skill_read_bytes": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "skill_read_calls": {
+        "sum": 0,
+        "mean": 0,
+        "median": 0.0
+      },
+      "task_tool_result_text_bytes": {
+        "sum": 113047,
+        "mean": 18841.166666666668,
+        "median": 9410.5
+      },
+      "model_calls": {
+        "sum": 55,
+        "mean": 9.166666666666666,
+        "median": 9.0
+      },
+      "estimated_cost_usd": {
+        "sum": 0.3332368,
+        "mean": 0.05553946666666667,
+        "median": 0.0377576
+      },
+      "elapsed_seconds": {
+        "sum": 272.727,
+        "mean": 45.4545,
+        "median": 42.8845
+      },
+      "runtime_filtered_results": {
+        "sum": 4,
+        "mean": 0.6666666666666666,
+        "median": 1.0
+      },
+      "recovery_calls": {
+        "sum": 2,
+        "mean": 0.3333333333333333,
+        "median": 0.0
+      },
+      "tool_errors": {
+        "sum": 5,
+        "mean": 0.8333333333333334,
+        "median": 1.0
+      },
+      "recovery_bytes": {
+        "sum": 692,
+        "mean": 115.33333333333333,
+        "median": 0.0
+      },
+      "acceptance_passed": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "acceptance_total": {
+        "sum": 56,
+        "mean": 9.333333333333334,
+        "median": 9.0
+      },
+      "review_found": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_seeded": {
+        "sum": 12,
+        "mean": 2,
+        "median": 0.0
+      },
+      "review_reported": {
+        "sum": 16,
+        "mean": 2.6666666666666665,
+        "median": 0.0
+      },
+      "verified": true
+    }
+  },
+  "per_task": {
+    "log-triage": {
+      "baseline": {
+        "final_words": {
+          "sum": 228,
+          "mean": 114,
+          "median": 114.0
+        },
+        "prose_words": {
+          "sum": 228,
+          "mean": 114,
+          "median": 114.0
+        },
+        "output": {
+          "sum": 3079,
+          "mean": 1539.5,
+          "median": 1539.5
+        },
+        "input": {
+          "sum": 34230,
+          "mean": 17115,
+          "median": 17115.0
+        },
+        "cacheRead": {
+          "sum": 173440,
+          "mean": 86720,
+          "median": 86720.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 210749,
+          "mean": 105374.5,
+          "median": 105374.5
+        },
+        "input_context_tokens": {
+          "sum": 207670,
+          "mean": 103835,
+          "median": 103835.0
+        },
+        "tool_calls": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "tool_result_text_bytes": {
+          "sum": 94428,
+          "mean": 47214,
+          "median": 47214.0
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 94428,
+          "mean": 47214,
+          "median": 47214.0
+        },
+        "model_calls": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.133938,
+          "mean": 0.066969,
+          "median": 0.066969
+        },
+        "elapsed_seconds": {
+          "sum": 57.509,
+          "mean": 28.7545,
+          "median": 28.7545
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 1,
+          "mean": 0.5,
+          "median": 0.5
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "acceptance_total": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      },
+      "laconic": {
+        "final_words": {
+          "sum": 197,
+          "mean": 98.5,
+          "median": 98.5
+        },
+        "prose_words": {
+          "sum": 197,
+          "mean": 98.5,
+          "median": 98.5
+        },
+        "output": {
+          "sum": 3363,
+          "mean": 1681.5,
+          "median": 1681.5
+        },
+        "input": {
+          "sum": 40452,
+          "mean": 20226,
+          "median": 20226.0
+        },
+        "cacheRead": {
+          "sum": 180864,
+          "mean": 90432,
+          "median": 90432.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 224679,
+          "mean": 112339.5,
+          "median": 112339.5
+        },
+        "input_context_tokens": {
+          "sum": 221316,
+          "mean": 110658,
+          "median": 110658.0
+        },
+        "tool_calls": {
+          "sum": 24,
+          "mean": 12,
+          "median": 12.0
+        },
+        "tool_result_text_bytes": {
+          "sum": 104463,
+          "mean": 52231.5,
+          "median": 52231.5
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 104463,
+          "mean": 52231.5,
+          "median": 52231.5
+        },
+        "model_calls": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.1507068,
+          "mean": 0.0753534,
+          "median": 0.0753534
+        },
+        "elapsed_seconds": {
+          "sum": 58.595,
+          "mean": 29.2975,
+          "median": 29.2975
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 3,
+          "mean": 1.5,
+          "median": 1.5
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "acceptance_total": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      },
+      "runtime": {
+        "final_words": {
+          "sum": 211,
+          "mean": 105.5,
+          "median": 105.5
+        },
+        "prose_words": {
+          "sum": 211,
+          "mean": 105.5,
+          "median": 105.5
+        },
+        "output": {
+          "sum": 3058,
+          "mean": 1529,
+          "median": 1529.0
+        },
+        "input": {
+          "sum": 19440,
+          "mean": 9720,
+          "median": 9720.0
+        },
+        "cacheRead": {
+          "sum": 51328,
+          "mean": 25664,
+          "median": 25664.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 73826,
+          "mean": 36913,
+          "median": 36913.0
+        },
+        "input_context_tokens": {
+          "sum": 70768,
+          "mean": 35384,
+          "median": 35384.0
+        },
+        "tool_calls": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "tool_result_text_bytes": {
+          "sum": 17879,
+          "mean": 8939.5,
+          "median": 8939.5
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 17879,
+          "mean": 8939.5,
+          "median": 8939.5
+        },
+        "model_calls": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.07972560000000001,
+          "mean": 0.039862800000000004,
+          "median": 0.039862800000000004
+        },
+        "elapsed_seconds": {
+          "sum": 78.949,
+          "mean": 39.4745,
+          "median": 39.4745
+        },
+        "runtime_filtered_results": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "recovery_calls": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "tool_errors": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_bytes": {
+          "sum": 798,
+          "mean": 399,
+          "median": 399.0
+        },
+        "acceptance_passed": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "acceptance_total": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      },
+      "both": {
+        "final_words": {
+          "sum": 180,
+          "mean": 90,
+          "median": 90.0
+        },
+        "prose_words": {
+          "sum": 180,
+          "mean": 90,
+          "median": 90.0
+        },
+        "output": {
+          "sum": 3067,
+          "mean": 1533.5,
+          "median": 1533.5
+        },
+        "input": {
+          "sum": 15485,
+          "mean": 7742.5,
+          "median": 7742.5
+        },
+        "cacheRead": {
+          "sum": 69376,
+          "mean": 34688,
+          "median": 34688.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 87928,
+          "mean": 43964,
+          "median": 43964.0
+        },
+        "input_context_tokens": {
+          "sum": 84861,
+          "mean": 42430.5,
+          "median": 42430.5
+        },
+        "tool_calls": {
+          "sum": 24,
+          "mean": 12,
+          "median": 12.0
+        },
+        "tool_result_text_bytes": {
+          "sum": 18821,
+          "mean": 9410.5,
+          "median": 9410.5
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 18821,
+          "mean": 9410.5,
+          "median": 9410.5
+        },
+        "model_calls": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.0755152,
+          "mean": 0.0377576,
+          "median": 0.0377576
+        },
+        "elapsed_seconds": {
+          "sum": 73.206,
+          "mean": 36.603,
+          "median": 36.603
+        },
+        "runtime_filtered_results": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "recovery_calls": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "tool_errors": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_bytes": {
+          "sum": 692,
+          "mean": 346,
+          "median": 346.0
+        },
+        "acceptance_passed": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "acceptance_total": {
+          "sum": 22,
+          "mean": 11,
+          "median": 11.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      }
+    },
+    "review": {
+      "baseline": {
+        "final_words": {
+          "sum": 62,
+          "mean": 31,
+          "median": 31.0
+        },
+        "prose_words": {
+          "sum": 62,
+          "mean": 31,
+          "median": 31.0
+        },
+        "output": {
+          "sum": 3739,
+          "mean": 1869.5,
+          "median": 1869.5
+        },
+        "input": {
+          "sum": 48065,
+          "mean": 24032.5,
+          "median": 24032.5
+        },
+        "cacheRead": {
+          "sum": 245504,
+          "mean": 122752,
+          "median": 122752.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 297308,
+          "mean": 148654,
+          "median": 148654.0
+        },
+        "input_context_tokens": {
+          "sum": 293569,
+          "mean": 146784.5,
+          "median": 146784.5
+        },
+        "tool_calls": {
+          "sum": 41,
+          "mean": 20.5,
+          "median": 20.5
+        },
+        "tool_result_text_bytes": {
+          "sum": 142120,
+          "mean": 71060,
+          "median": 71060.0
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 142120,
+          "mean": 71060,
+          "median": 71060.0
+        },
+        "model_calls": {
+          "sum": 17,
+          "mean": 8.5,
+          "median": 8.5
+        },
+        "estimated_cost_usd": {
+          "sum": 0.18262080000000003,
+          "mean": 0.09131040000000001,
+          "median": 0.09131040000000001
+        },
+        "elapsed_seconds": {
+          "sum": 78.845,
+          "mean": 39.4225,
+          "median": 39.4225
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "acceptance_total": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "review_found": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_seeded": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_reported": {
+          "sum": 14,
+          "mean": 7,
+          "median": 7.0
+        },
+        "verified": true
+      },
+      "laconic": {
+        "final_words": {
+          "sum": 63,
+          "mean": 31.5,
+          "median": 31.5
+        },
+        "prose_words": {
+          "sum": 63,
+          "mean": 31.5,
+          "median": 31.5
+        },
+        "output": {
+          "sum": 6134,
+          "mean": 3067,
+          "median": 3067.0
+        },
+        "input": {
+          "sum": 58722,
+          "mean": 29361,
+          "median": 29361.0
+        },
+        "cacheRead": {
+          "sum": 507904,
+          "mean": 253952,
+          "median": 253952.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 572760,
+          "mean": 286380,
+          "median": 286380.0
+        },
+        "input_context_tokens": {
+          "sum": 566626,
+          "mean": 283313,
+          "median": 283313.0
+        },
+        "tool_calls": {
+          "sum": 48,
+          "mean": 24,
+          "median": 24.0
+        },
+        "tool_result_text_bytes": {
+          "sum": 166803,
+          "mean": 83401.5,
+          "median": 83401.5
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 166803,
+          "mean": 83401.5,
+          "median": 83401.5
+        },
+        "model_calls": {
+          "sum": 26,
+          "mean": 13,
+          "median": 13.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.2803648,
+          "mean": 0.1401824,
+          "median": 0.1401824
+        },
+        "elapsed_seconds": {
+          "sum": 122.109,
+          "mean": 61.0545,
+          "median": 61.0545
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 4,
+          "mean": 2,
+          "median": 2.0
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "acceptance_total": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "review_found": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_seeded": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_reported": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "verified": true
+      },
+      "runtime": {
+        "final_words": {
+          "sum": 58,
+          "mean": 29,
+          "median": 29.0
+        },
+        "prose_words": {
+          "sum": 58,
+          "mean": 29,
+          "median": 29.0
+        },
+        "output": {
+          "sum": 4056,
+          "mean": 2028,
+          "median": 2028.0
+        },
+        "input": {
+          "sum": 37053,
+          "mean": 18526.5,
+          "median": 18526.5
+        },
+        "cacheRead": {
+          "sum": 106880,
+          "mean": 53440,
+          "median": 53440.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 147989,
+          "mean": 73994.5,
+          "median": 73994.5
+        },
+        "input_context_tokens": {
+          "sum": 143933,
+          "mean": 71966.5,
+          "median": 71966.5
+        },
+        "tool_calls": {
+          "sum": 35,
+          "mean": 17.5,
+          "median": 17.5
+        },
+        "tool_result_text_bytes": {
+          "sum": 61234,
+          "mean": 30617,
+          "median": 30617.0
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 61234,
+          "mean": 30617,
+          "median": 30617.0
+        },
+        "model_calls": {
+          "sum": 19,
+          "mean": 9.5,
+          "median": 9.5
+        },
+        "estimated_cost_usd": {
+          "sum": 0.136042,
+          "mean": 0.068021,
+          "median": 0.068021
+        },
+        "elapsed_seconds": {
+          "sum": 82.531,
+          "mean": 41.2655,
+          "median": 41.2655
+        },
+        "runtime_filtered_results": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "acceptance_total": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "review_found": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_seeded": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_reported": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "verified": true
+      },
+      "both": {
+        "final_words": {
+          "sum": 58,
+          "mean": 29,
+          "median": 29.0
+        },
+        "prose_words": {
+          "sum": 58,
+          "mean": 29,
+          "median": 29.0
+        },
+        "output": {
+          "sum": 5059,
+          "mean": 2529.5,
+          "median": 2529.5
+        },
+        "input": {
+          "sum": 51509,
+          "mean": 25754.5,
+          "median": 25754.5
+        },
+        "cacheRead": {
+          "sum": 217728,
+          "mean": 108864,
+          "median": 108864.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 274296,
+          "mean": 137148,
+          "median": 137148.0
+        },
+        "input_context_tokens": {
+          "sum": 269237,
+          "mean": 134618.5,
+          "median": 134618.5
+        },
+        "tool_calls": {
+          "sum": 32,
+          "mean": 16,
+          "median": 16.0
+        },
+        "tool_result_text_bytes": {
+          "sum": 80969,
+          "mean": 40484.5,
+          "median": 40484.5
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 80969,
+          "mean": 40484.5,
+          "median": 40484.5
+        },
+        "model_calls": {
+          "sum": 25,
+          "mean": 12.5,
+          "median": 12.5
+        },
+        "estimated_cost_usd": {
+          "sum": 0.19715359999999998,
+          "mean": 0.09857679999999999,
+          "median": 0.09857679999999999
+        },
+        "elapsed_seconds": {
+          "sum": 138.416,
+          "mean": 69.208,
+          "median": 69.208
+        },
+        "runtime_filtered_results": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 2,
+          "mean": 1,
+          "median": 1.0
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "acceptance_total": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "review_found": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_seeded": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "review_reported": {
+          "sum": 16,
+          "mean": 8,
+          "median": 8.0
+        },
+        "verified": true
+      }
+    },
+    "usage": {
+      "baseline": {
+        "final_words": {
+          "sum": 201,
+          "mean": 100.5,
+          "median": 100.5
+        },
+        "prose_words": {
+          "sum": 201,
+          "mean": 100.5,
+          "median": 100.5
+        },
+        "output": {
+          "sum": 3104,
+          "mean": 1552,
+          "median": 1552.0
+        },
+        "input": {
+          "sum": 15636,
+          "mean": 7818,
+          "median": 7818.0
+        },
+        "cacheRead": {
+          "sum": 19072,
+          "mean": 9536,
+          "median": 9536.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 37812,
+          "mean": 18906,
+          "median": 18906.0
+        },
+        "input_context_tokens": {
+          "sum": 34708,
+          "mean": 17354,
+          "median": 17354.0
+        },
+        "tool_calls": {
+          "sum": 17,
+          "mean": 8.5,
+          "median": 8.5
+        },
+        "tool_result_text_bytes": {
+          "sum": 9160,
+          "mean": 4580,
+          "median": 4580.0
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 9160,
+          "mean": 4580,
+          "median": 4580.0
+        },
+        "model_calls": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.0661264,
+          "mean": 0.0330632,
+          "median": 0.0330632
+        },
+        "elapsed_seconds": {
+          "sum": 63.209,
+          "mean": 31.6045,
+          "median": 31.6045
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "acceptance_total": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      },
+      "laconic": {
+        "final_words": {
+          "sum": 161,
+          "mean": 80.5,
+          "median": 80.5
+        },
+        "prose_words": {
+          "sum": 161,
+          "mean": 80.5,
+          "median": 80.5
+        },
+        "output": {
+          "sum": 3057,
+          "mean": 1528.5,
+          "median": 1528.5
+        },
+        "input": {
+          "sum": 17383,
+          "mean": 8691.5,
+          "median": 8691.5
+        },
+        "cacheRead": {
+          "sum": 27648,
+          "mean": 13824,
+          "median": 13824.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 48088,
+          "mean": 24044,
+          "median": 24044.0
+        },
+        "input_context_tokens": {
+          "sum": 45031,
+          "mean": 22515.5,
+          "median": 22515.5
+        },
+        "tool_calls": {
+          "sum": 20,
+          "mean": 10,
+          "median": 10.0
+        },
+        "tool_result_text_bytes": {
+          "sum": 17940,
+          "mean": 8970,
+          "median": 8970.0
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 17940,
+          "mean": 8970,
+          "median": 8970.0
+        },
+        "model_calls": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.0708656,
+          "mean": 0.0354328,
+          "median": 0.0354328
+        },
+        "elapsed_seconds": {
+          "sum": 63.03999999999999,
+          "mean": 31.519999999999996,
+          "median": 31.519999999999996
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 4,
+          "mean": 2,
+          "median": 2.0
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "acceptance_total": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      },
+      "runtime": {
+        "final_words": {
+          "sum": 203,
+          "mean": 101.5,
+          "median": 101.5
+        },
+        "prose_words": {
+          "sum": 203,
+          "mean": 101.5,
+          "median": 101.5
+        },
+        "output": {
+          "sum": 2791,
+          "mean": 1395.5,
+          "median": 1395.5
+        },
+        "input": {
+          "sum": 16610,
+          "mean": 8305,
+          "median": 8305.0
+        },
+        "cacheRead": {
+          "sum": 27392,
+          "mean": 13696,
+          "median": 13696.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 46793,
+          "mean": 23396.5,
+          "median": 23396.5
+        },
+        "input_context_tokens": {
+          "sum": 44002,
+          "mean": 22001,
+          "median": 22001.0
+        },
+        "tool_calls": {
+          "sum": 19,
+          "mean": 9.5,
+          "median": 9.5
+        },
+        "tool_result_text_bytes": {
+          "sum": 12653,
+          "mean": 6326.5,
+          "median": 6326.5
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 12653,
+          "mean": 6326.5,
+          "median": 6326.5
+        },
+        "model_calls": {
+          "sum": 13,
+          "mean": 6.5,
+          "median": 6.5
+        },
+        "estimated_cost_usd": {
+          "sum": 0.0666084,
+          "mean": 0.0333042,
+          "median": 0.0333042
+        },
+        "elapsed_seconds": {
+          "sum": 49.248999999999995,
+          "mean": 24.624499999999998,
+          "median": 24.624499999999998
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 1,
+          "mean": 0.5,
+          "median": 0.5
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "acceptance_total": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      },
+      "both": {
+        "final_words": {
+          "sum": 176,
+          "mean": 88,
+          "median": 88.0
+        },
+        "prose_words": {
+          "sum": 176,
+          "mean": 88,
+          "median": 88.0
+        },
+        "output": {
+          "sum": 2864,
+          "mean": 1432,
+          "median": 1432.0
+        },
+        "input": {
+          "sum": 12636,
+          "mean": 6318,
+          "median": 6318.0
+        },
+        "cacheRead": {
+          "sum": 33280,
+          "mean": 16640,
+          "median": 16640.0
+        },
+        "cacheWrite": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "total_tokens": {
+          "sum": 48780,
+          "mean": 24390,
+          "median": 24390.0
+        },
+        "input_context_tokens": {
+          "sum": 45916,
+          "mean": 22958,
+          "median": 22958.0
+        },
+        "tool_calls": {
+          "sum": 19,
+          "mean": 9.5,
+          "median": 9.5
+        },
+        "tool_result_text_bytes": {
+          "sum": 13257,
+          "mean": 6628.5,
+          "median": 6628.5
+        },
+        "skill_read_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "skill_read_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "task_tool_result_text_bytes": {
+          "sum": 13257,
+          "mean": 6628.5,
+          "median": 6628.5
+        },
+        "model_calls": {
+          "sum": 12,
+          "mean": 6,
+          "median": 6.0
+        },
+        "estimated_cost_usd": {
+          "sum": 0.060568,
+          "mean": 0.030284,
+          "median": 0.030284
+        },
+        "elapsed_seconds": {
+          "sum": 61.105000000000004,
+          "mean": 30.552500000000002,
+          "median": 30.552500000000002
+        },
+        "runtime_filtered_results": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "recovery_calls": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "tool_errors": {
+          "sum": 3,
+          "mean": 1.5,
+          "median": 1.5
+        },
+        "recovery_bytes": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "acceptance_passed": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "acceptance_total": {
+          "sum": 18,
+          "mean": 9,
+          "median": 9.0
+        },
+        "review_found": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_seeded": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "review_reported": {
+          "sum": 0,
+          "mean": 0,
+          "median": 0.0
+        },
+        "verified": true
+      }
+    }
+  },
+  "comparisons_to_baseline": {
+    "laconic": {
+      "final_words": 14.257,
+      "prose_words": 14.257,
+      "output": -26.527,
+      "input": -19.02,
+      "cacheRead": -63.559,
+      "cacheWrite": null,
+      "total_tokens": -54.896,
+      "input_context_tokens": -55.421,
+      "tool_calls": -15.0,
+      "tool_result_text_bytes": -17.703,
+      "skill_read_bytes": null,
+      "skill_read_calls": null,
+      "task_tool_result_text_bytes": -17.703,
+      "model_calls": -20.0,
+      "estimated_cost_usd": -31.162,
+      "elapsed_seconds": -22.139,
+      "runtime_filtered_results": null,
+      "recovery_calls": null,
+      "tool_errors": -266.667,
+      "recovery_bytes": null,
+      "acceptance_passed": 0.0,
+      "acceptance_total": 0.0,
+      "review_found": 0.0,
+      "review_seeded": 0.0,
+      "review_reported": -14.286
+    },
+    "runtime": {
+      "final_words": 3.87,
+      "prose_words": 3.87,
+      "output": 0.171,
+      "input": 25.353,
+      "cacheRead": 57.627,
+      "cacheWrite": null,
+      "total_tokens": 50.793,
+      "input_context_tokens": 51.73,
+      "tool_calls": 5.0,
+      "tool_result_text_bytes": 62.652,
+      "skill_read_bytes": null,
+      "skill_read_calls": null,
+      "task_tool_result_text_bytes": 62.652,
+      "model_calls": -11.111,
+      "estimated_cost_usd": 26.212,
+      "elapsed_seconds": -5.595,
+      "runtime_filtered_results": null,
+      "recovery_calls": null,
+      "tool_errors": 0.0,
+      "recovery_bytes": null,
+      "acceptance_passed": 0.0,
+      "acceptance_total": 0.0,
+      "review_found": 0.0,
+      "review_seeded": 0.0,
+      "review_reported": -14.286
+    },
+    "both": {
+      "final_words": 15.682,
+      "prose_words": 15.682,
+      "output": -10.764,
+      "input": 18.688,
+      "cacheRead": 26.856,
+      "cacheWrite": null,
+      "total_tokens": 24.706,
+      "input_context_tokens": 25.363,
+      "tool_calls": 6.25,
+      "tool_result_text_bytes": 53.991,
+      "skill_read_bytes": null,
+      "skill_read_calls": null,
+      "task_tool_result_text_bytes": 53.991,
+      "model_calls": -22.222,
+      "estimated_cost_usd": 12.921,
+      "elapsed_seconds": -36.662,
+      "runtime_filtered_results": null,
+      "recovery_calls": null,
+      "tool_errors": -66.667,
+      "recovery_bytes": null,
+      "acceptance_passed": 0.0,
+      "acceptance_total": 0.0,
+      "review_found": 0.0,
+      "review_seeded": 0.0,
+      "review_reported": -14.286
+    }
+  },
+  "per_task_comparisons_to_baseline": {
+    "log-triage": {
+      "laconic": {
+        "final_words": 13.596,
+        "prose_words": 13.596,
+        "output": -9.224,
+        "input": -18.177,
+        "cacheRead": -4.28,
+        "cacheWrite": null,
+        "total_tokens": -6.61,
+        "input_context_tokens": -6.571,
+        "tool_calls": -9.091,
+        "tool_result_text_bytes": -10.627,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -10.627,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -12.52,
+        "elapsed_seconds": -1.888,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": -200.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      },
+      "runtime": {
+        "final_words": 7.456,
+        "prose_words": 7.456,
+        "output": 0.682,
+        "input": 43.208,
+        "cacheRead": 70.406,
+        "cacheWrite": null,
+        "total_tokens": 64.97,
+        "input_context_tokens": 65.923,
+        "tool_calls": 0.0,
+        "tool_result_text_bytes": 81.066,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 81.066,
+        "model_calls": -12.5,
+        "estimated_cost_usd": 40.476,
+        "elapsed_seconds": -37.281,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 100.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      },
+      "both": {
+        "final_words": 21.053,
+        "prose_words": 21.053,
+        "output": 0.39,
+        "input": 54.762,
+        "cacheRead": 60.0,
+        "cacheWrite": null,
+        "total_tokens": 58.278,
+        "input_context_tokens": 59.137,
+        "tool_calls": -9.091,
+        "tool_result_text_bytes": 80.068,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 80.068,
+        "model_calls": -12.5,
+        "estimated_cost_usd": 43.619,
+        "elapsed_seconds": -27.295,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 100.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    "review": {
+      "laconic": {
+        "final_words": -1.613,
+        "prose_words": -1.613,
+        "output": -64.055,
+        "input": -22.172,
+        "cacheRead": -106.882,
+        "cacheWrite": null,
+        "total_tokens": -92.649,
+        "input_context_tokens": -93.013,
+        "tool_calls": -17.073,
+        "tool_result_text_bytes": -17.368,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -17.368,
+        "model_calls": -52.941,
+        "estimated_cost_usd": -53.523,
+        "elapsed_seconds": -54.872,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": -100.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": -14.286
+      },
+      "runtime": {
+        "final_words": 6.452,
+        "prose_words": 6.452,
+        "output": -8.478,
+        "input": 22.911,
+        "cacheRead": 56.465,
+        "cacheWrite": null,
+        "total_tokens": 50.224,
+        "input_context_tokens": 50.971,
+        "tool_calls": 14.634,
+        "tool_result_text_bytes": 56.914,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 56.914,
+        "model_calls": -11.765,
+        "estimated_cost_usd": 25.506,
+        "elapsed_seconds": -4.675,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": -14.286
+      },
+      "both": {
+        "final_words": 6.452,
+        "prose_words": 6.452,
+        "output": -35.304,
+        "input": -7.165,
+        "cacheRead": 11.314,
+        "cacheWrite": null,
+        "total_tokens": 7.74,
+        "input_context_tokens": 8.288,
+        "tool_calls": 21.951,
+        "tool_result_text_bytes": 43.028,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 43.028,
+        "model_calls": -47.059,
+        "estimated_cost_usd": -7.958,
+        "elapsed_seconds": -75.555,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": -14.286
+      }
+    },
+    "usage": {
+      "laconic": {
+        "final_words": 19.9,
+        "prose_words": 19.9,
+        "output": 1.514,
+        "input": -11.173,
+        "cacheRead": -44.966,
+        "cacheWrite": null,
+        "total_tokens": -27.177,
+        "input_context_tokens": -29.742,
+        "tool_calls": -17.647,
+        "tool_result_text_bytes": -95.852,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -95.852,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -7.167,
+        "elapsed_seconds": 0.267,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      },
+      "runtime": {
+        "final_words": -0.995,
+        "prose_words": -0.995,
+        "output": 10.084,
+        "input": -6.229,
+        "cacheRead": -43.624,
+        "cacheWrite": null,
+        "total_tokens": -23.752,
+        "input_context_tokens": -26.778,
+        "tool_calls": -11.765,
+        "tool_result_text_bytes": -38.133,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -38.133,
+        "model_calls": -8.333,
+        "estimated_cost_usd": -0.729,
+        "elapsed_seconds": 22.085,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      },
+      "both": {
+        "final_words": 12.438,
+        "prose_words": 12.438,
+        "output": 7.732,
+        "input": 19.186,
+        "cacheRead": -74.497,
+        "cacheWrite": null,
+        "total_tokens": -29.007,
+        "input_context_tokens": -32.292,
+        "tool_calls": -11.765,
+        "tool_result_text_bytes": -44.727,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -44.727,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 8.406,
+        "elapsed_seconds": 3.329,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    }
+  },
+  "paired": [
+    {
+      "task": "log-triage",
+      "pair": 1,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 14.679,
+        "prose_words": 14.679,
+        "output": -9.856,
+        "input": -12.777,
+        "cacheRead": -5.457,
+        "cacheWrite": null,
+        "total_tokens": -6.716,
+        "input_context_tokens": -6.668,
+        "tool_calls": -9.091,
+        "tool_result_text_bytes": -10.952,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -10.952,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -10.212,
+        "elapsed_seconds": -12.084,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "log-triage",
+      "pair": 1,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": 11.927,
+        "prose_words": 11.927,
+        "output": 3.578,
+        "input": 26.932,
+        "cacheRead": 73.304,
+        "cacheWrite": null,
+        "total_tokens": 64.699,
+        "input_context_tokens": 65.635,
+        "tool_calls": -9.091,
+        "tool_result_text_bytes": 80.974,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 80.974,
+        "model_calls": -12.5,
+        "estimated_cost_usd": 33.328,
+        "elapsed_seconds": -16.171,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "log-triage",
+      "pair": 1,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 15.596,
+        "prose_words": 15.596,
+        "output": 7.156,
+        "input": 54.626,
+        "cacheRead": 59.882,
+        "cacheWrite": null,
+        "total_tokens": 58.23,
+        "input_context_tokens": 59.013,
+        "tool_calls": -9.091,
+        "tool_result_text_bytes": 79.5,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 79.5,
+        "model_calls": -12.5,
+        "estimated_cost_usd": 44.801,
+        "elapsed_seconds": 8.441,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "log-triage",
+      "pair": 2,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 12.605,
+        "prose_words": 12.605,
+        "output": -8.546,
+        "input": -23.628,
+        "cacheRead": -3.102,
+        "cacheWrite": null,
+        "total_tokens": -6.503,
+        "input_context_tokens": -6.474,
+        "tool_calls": -9.091,
+        "tool_result_text_bytes": -10.301,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -10.301,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -14.877,
+        "elapsed_seconds": 8.181,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "log-triage",
+      "pair": 2,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": 3.361,
+        "prose_words": 3.361,
+        "output": -2.423,
+        "input": 59.636,
+        "cacheRead": 67.504,
+        "cacheWrite": null,
+        "total_tokens": 65.241,
+        "input_context_tokens": 66.211,
+        "tool_calls": 9.091,
+        "tool_result_text_bytes": 81.158,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 81.158,
+        "model_calls": -12.5,
+        "estimated_cost_usd": 47.776,
+        "elapsed_seconds": -58.129,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 100.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "log-triage",
+      "pair": 2,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 26.05,
+        "prose_words": 26.05,
+        "output": -6.864,
+        "input": 54.899,
+        "cacheRead": 60.118,
+        "cacheWrite": null,
+        "total_tokens": 58.326,
+        "input_context_tokens": 59.261,
+        "tool_calls": -9.091,
+        "tool_result_text_bytes": 80.638,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 80.638,
+        "model_calls": -12.5,
+        "estimated_cost_usd": 42.413,
+        "elapsed_seconds": -62.587,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 100.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "review",
+      "pair": 1,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": -6.897,
+        "prose_words": -6.897,
+        "output": -37.566,
+        "input": -12.667,
+        "cacheRead": -84.211,
+        "cacheWrite": null,
+        "total_tokens": -72.536,
+        "input_context_tokens": -72.984,
+        "tool_calls": -14.286,
+        "tool_result_text_bytes": -10.595,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -10.595,
+        "model_calls": -44.444,
+        "estimated_cost_usd": -37.649,
+        "elapsed_seconds": -33.816,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": -100.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": 0.0
+      }
+    },
+    {
+      "task": "review",
+      "pair": 1,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": 0.0,
+        "prose_words": 0.0,
+        "output": -1.593,
+        "input": 13.472,
+        "cacheRead": 67.293,
+        "cacheWrite": null,
+        "total_tokens": 58.083,
+        "input_context_tokens": 58.848,
+        "tool_calls": 19.048,
+        "tool_result_text_bytes": 62.675,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 62.675,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 25.17,
+        "elapsed_seconds": 13.02,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": 0.0
+      }
+    },
+    {
+      "task": "review",
+      "pair": 1,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": -10.345,
+        "prose_words": -10.345,
+        "output": -19.845,
+        "input": -38.4,
+        "cacheRead": 22.65,
+        "cacheWrite": null,
+        "total_tokens": 12.654,
+        "input_context_tokens": 13.07,
+        "tool_calls": 4.762,
+        "tool_result_text_bytes": 36.881,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 36.881,
+        "model_calls": -33.333,
+        "estimated_cost_usd": -17.647,
+        "elapsed_seconds": -62.288,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": 0.0
+      }
+    },
+    {
+      "task": "review",
+      "pair": 2,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 3.03,
+        "prose_words": 3.03,
+        "output": -96.942,
+        "input": -32.779,
+        "cacheRead": -135.129,
+        "cacheWrite": null,
+        "total_tokens": -117.262,
+        "input_context_tokens": -117.519,
+        "tool_calls": -20.0,
+        "tool_result_text_bytes": -24.482,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -24.482,
+        "model_calls": -62.5,
+        "estimated_cost_usd": -72.17,
+        "elapsed_seconds": -84.956,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": -100.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": -33.333
+      }
+    },
+    {
+      "task": "review",
+      "pair": 2,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": 12.121,
+        "prose_words": 12.121,
+        "output": -17.026,
+        "input": 33.443,
+        "cacheRead": 42.974,
+        "cacheWrite": null,
+        "total_tokens": 40.606,
+        "input_context_tokens": 41.334,
+        "tool_calls": 10.0,
+        "tool_result_text_bytes": 50.862,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 50.862,
+        "model_calls": -25.0,
+        "estimated_cost_usd": 25.9,
+        "elapsed_seconds": -29.956,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": -33.333
+      }
+    },
+    {
+      "task": "review",
+      "pair": 2,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 21.212,
+        "prose_words": 21.212,
+        "output": -54.496,
+        "input": 27.69,
+        "cacheRead": -2.81,
+        "cacheWrite": null,
+        "total_tokens": 1.727,
+        "input_context_tokens": 2.437,
+        "tool_calls": 40.0,
+        "tool_result_text_bytes": 49.484,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 49.484,
+        "model_calls": -62.5,
+        "estimated_cost_usd": 3.424,
+        "elapsed_seconds": -94.508,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": 0.0,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": 0.0,
+        "review_seeded": 0.0,
+        "review_reported": -33.333
+      }
+    },
+    {
+      "task": "usage",
+      "pair": 1,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 26.214,
+        "prose_words": 26.214,
+        "output": -1.04,
+        "input": -4.623,
+        "cacheRead": -48.78,
+        "cacheWrite": null,
+        "total_tokens": -29.061,
+        "input_context_tokens": -31.568,
+        "tool_calls": -25.0,
+        "tool_result_text_bytes": -98.94,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -98.94,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -5.838,
+        "elapsed_seconds": -9.213,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "usage",
+      "pair": 1,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": -0.971,
+        "prose_words": -0.971,
+        "output": -2.339,
+        "input": -16.078,
+        "cacheRead": -52.439,
+        "cacheWrite": null,
+        "total_tokens": -35.315,
+        "input_context_tokens": -38.265,
+        "tool_calls": -25.0,
+        "tool_result_text_bytes": -51.766,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -51.766,
+        "model_calls": -16.667,
+        "estimated_cost_usd": -11.705,
+        "elapsed_seconds": -18.062,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "usage",
+      "pair": 1,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 12.621,
+        "prose_words": 12.621,
+        "output": 9.617,
+        "input": 15.496,
+        "cacheRead": -58.537,
+        "cacheWrite": null,
+        "total_tokens": -26.451,
+        "input_context_tokens": -29.679,
+        "tool_calls": -12.5,
+        "tool_result_text_bytes": 0.596,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": 0.596,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 7.538,
+        "elapsed_seconds": -0.575,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "usage",
+      "pair": 2,
+      "arm": "laconic",
+      "savings_percent": {
+        "final_words": 13.265,
+        "prose_words": 13.265,
+        "output": 4.026,
+        "input": -16.09,
+        "cacheRead": -40.299,
+        "cacheWrite": null,
+        "total_tokens": -25.325,
+        "input_context_tokens": -27.949,
+        "tool_calls": -11.111,
+        "tool_result_text_bytes": -92.829,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -92.829,
+        "model_calls": 0.0,
+        "estimated_cost_usd": -8.332,
+        "elapsed_seconds": 5.418,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "usage",
+      "pair": 2,
+      "arm": "runtime",
+      "savings_percent": {
+        "final_words": -1.02,
+        "prose_words": -1.02,
+        "output": 22.3,
+        "input": 1.164,
+        "cacheRead": -32.836,
+        "cacheWrite": null,
+        "total_tokens": -12.39,
+        "input_context_tokens": -15.491,
+        "tool_calls": 0.0,
+        "tool_result_text_bytes": -24.795,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -24.795,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 8.899,
+        "elapsed_seconds": 43.896,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    },
+    {
+      "task": "usage",
+      "pair": 2,
+      "arm": "both",
+      "savings_percent": {
+        "final_words": 12.245,
+        "prose_words": 12.245,
+        "output": 5.879,
+        "input": 21.957,
+        "cacheRead": -94.03,
+        "cacheWrite": null,
+        "total_tokens": -31.517,
+        "input_context_tokens": -34.86,
+        "tool_calls": -11.111,
+        "tool_result_text_bytes": -89.071,
+        "skill_read_bytes": null,
+        "skill_read_calls": null,
+        "task_tool_result_text_bytes": -89.071,
+        "model_calls": 0.0,
+        "estimated_cost_usd": 9.167,
+        "elapsed_seconds": 5.449,
+        "runtime_filtered_results": null,
+        "recovery_calls": null,
+        "tool_errors": null,
+        "recovery_bytes": null,
+        "acceptance_passed": 0.0,
+        "acceptance_total": 0.0,
+        "review_found": null,
+        "review_seeded": null,
+        "review_reported": null
+      }
+    }
+  ],
+  "processor_replay": {
+    "method": "Identical synthetic text processed with default policy, 10 repeats per fixture; per-fixture evidence assertions (distinct failure groups, lossless search index, summaries), exact full-storage and line-range recovery assertions. No model calls.",
+    "node_version": "v22.23.1",
+    "repeats_per_fixture": 10,
+    "results": [
+      {
+        "fixture": "shell-log",
+        "sha256": "ad60bd4e07c9c471f205ccb4c5530e1215f7adea6a82584fdd686630721b833b",
+        "category": "shell",
+        "changed": true,
+        "original_bytes": 52853,
+        "model_visible_bytes": 3280,
+        "byte_reduction_percent": 93.79410818685788,
+        "retained_required_evidence": true,
+        "recovery_verified": true,
+        "processor_ms_median": 4.304040999999984,
+        "processor_ms_max": 6.422040999999993
+      },
+      {
+        "fixture": "test-log",
+        "sha256": "ad60bd4e07c9c471f205ccb4c5530e1215f7adea6a82584fdd686630721b833b",
+        "category": "test",
+        "changed": true,
+        "original_bytes": 52853,
+        "model_visible_bytes": 3279,
+        "byte_reduction_percent": 93.79600022704483,
+        "retained_required_evidence": true,
+        "recovery_verified": true,
+        "processor_ms_median": 3.202333999999979,
+        "processor_ms_max": 7.398040999999978
+      },
+      {
+        "fixture": "search-output",
+        "sha256": "ad60bd4e07c9c471f205ccb4c5530e1215f7adea6a82584fdd686630721b833b",
+        "category": "search",
+        "changed": true,
+        "original_bytes": 52853,
+        "model_visible_bytes": 3281,
+        "byte_reduction_percent": 93.79221614667095,
+        "retained_required_evidence": true,
+        "recovery_verified": true,
+        "processor_ms_median": 4.385417000000018,
+        "processor_ms_max": 4.6799159999999915
+      },
+      {
+        "fixture": "source-read",
+        "sha256": "ad60bd4e07c9c471f205ccb4c5530e1215f7adea6a82584fdd686630721b833b",
+        "category": "file",
+        "changed": false,
+        "original_bytes": 52853,
+        "model_visible_bytes": 52853,
+        "byte_reduction_percent": 0,
+        "retained_required_evidence": true,
+        "recovery_verified": false,
+        "processor_ms_median": 0.0072499999999990905,
+        "processor_ms_max": 0.025875000000041837
+      },
+      {
+        "fixture": "test-file-diff",
+        "sha256": "ad60bd4e07c9c471f205ccb4c5530e1215f7adea6a82584fdd686630721b833b",
+        "category": "git",
+        "changed": false,
+        "original_bytes": 52853,
+        "model_visible_bytes": 52853,
+        "byte_reduction_percent": 0,
+        "retained_required_evidence": true,
+        "recovery_verified": false,
+        "processor_ms_median": 0.007000000000005002,
+        "processor_ms_max": 0.00874999999996362
+      },
+      {
+        "fixture": "structured-shell",
+        "sha256": "f36a64551f8173c03ef34a2fec98bd8ac1c581da0827ddb04d6a36614d25114f",
+        "category": "shell",
+        "changed": false,
+        "original_bytes": 48013,
+        "model_visible_bytes": 48013,
+        "byte_reduction_percent": 0,
+        "retained_required_evidence": true,
+        "recovery_verified": false,
+        "processor_ms_median": 0.23329200000000583,
+        "processor_ms_max": 0.4387909999999806
+      },
+      {
+        "fixture": "unknown-tool",
+        "sha256": "ad60bd4e07c9c471f205ccb4c5530e1215f7adea6a82584fdd686630721b833b",
+        "category": "unknown",
+        "changed": false,
+        "original_bytes": 52853,
+        "model_visible_bytes": 52853,
+        "byte_reduction_percent": 0,
+        "retained_required_evidence": true,
+        "recovery_verified": false,
+        "processor_ms_median": 0.006459000000006654,
+        "processor_ms_max": 0.00895900000000438
+      },
+      {
+        "fixture": "multi-failure-flood",
+        "sha256": "190abf5e076cafa3b952b5ffe2702f7b678b1dc10a32017177f990a8487a8ff4",
+        "category": "shell",
+        "changed": true,
+        "original_bytes": 29000,
+        "model_visible_bytes": 3753,
+        "byte_reduction_percent": 87.05862068965517,
+        "retained_required_evidence": true,
+        "recovery_verified": true,
+        "processor_ms_median": 4.395208000000025,
+        "processor_ms_max": 8.493666000000019
+      },
+      {
+        "fixture": "search-many-files",
+        "sha256": "2677f3af73b28966b3235350dfa2441736494c2612d24ca258e3380fa068bc4c",
+        "category": "search",
+        "changed": true,
+        "original_bytes": 93291,
+        "model_visible_bytes": 8136,
+        "byte_reduction_percent": 91.27890150175259,
+        "retained_required_evidence": true,
+        "recovery_verified": true,
+        "processor_ms_median": 5.239167000000009,
+        "processor_ms_max": 14.512625000000014
+      },
+      {
+        "fixture": "long-head-warning-flood",
+        "sha256": "5ab57f52f2262f202187fa1753cd7d3ab99ce24ef61f8c2264ddaab4851ef7bb",
+        "category": "test",
+        "changed": true,
+        "original_bytes": 117063,
+        "model_visible_bytes": 10795,
+        "byte_reduction_percent": 90.77846971288965,
+        "retained_required_evidence": true,
+        "recovery_verified": true,
+        "processor_ms_median": 5.653832999999963,
+        "processor_ms_max": 14.027832999999987
+      }
+    ],
+    "limitation": "UTF-8 bytes and local processor latency only, not tokens, E2E task performance, or billed cost. Evidence assertions are fixture-specific; recovery reads are excluded from processor latency."
+  },
+  "definitions": {
+    "savings": "100 * (baseline sum - laconic sum) / baseline sum; negative means increase",
+    "total_tokens": "input + output + cacheRead + cacheWrite summed once per completed assistant message; reasoning is already output",
+    "estimated_cost_usd": "sum of Pi usage.cost.total metadata; catalog-based estimate, not billed/subscription cost",
+    "input_context": "input + cacheRead + cacheWrite; repeated context counted as the provider reports it",
+    "words": "regex word count; prose includes all assistant text, not reasoning/code tool arguments",
+    "tool_bytes": "UTF-8 text content bytes; excludes envelopes, images and tool-call arguments; not token counts",
+    "review_found": "seeded review defects matched by file + keyword in findings.json (independent, hidden from the agent)",
+    "recovery_bytes": "UTF-8 bytes returned by laconic_read_result calls",
+    "tool_efficiency": "independent acceptance checks passed / tool-result bytes * 1000; meaningful only for this identical task",
+    "artifact_policy": "non-streaming message_end events; reasoning/signatures omitted, temporary paths replaced"
+  },
+  "publication": "Aggregate, per-task and paired measurements only; scripts, raw sessions, generated solutions and recovery stores remain local."
+}

@@ -36,6 +36,21 @@ If a result exceeds the budget, prefer a host/tool-level mechanism that:
 4. Provides a clear retrieval pointer (file, line offset, page token, or query) and notes that the result is incomplete.
 5. Allows targeted expansion when missing details are necessary.
 
+**Recover by query, not by guessing ranges.** With the Laconic runtime, `laconic_read_result` accepts `query` (text, or regex with `regex=true`) and returns every matching line with `context` surrounding lines, or `around=N` for one location. One targeted query usually replaces several range reads and the extra model calls they cost.
+
+### Task-aware policies
+
+Pick the profile matching the work (`profile` in the runtime config or `LACONIC_PROFILE`):
+
+| Task | Profile | Behavior |
+| --- | --- | --- |
+| Code review / audit | `review` | Search results, file reads and diffs pass through whole; only repetitive shell/test logs are compressed. |
+| Implementation | `implementation` (default) | Moderate shell/test compression; search keeps a lossless file/line index. |
+| Debugging | `debugging` | Larger budgets, more failure groups and wider cause context; recovery always available. |
+| Documentation | `documentation` | Optimize final prose; compress only noisy command logs. |
+
+Measure recovery frequency and additional model calls (`laconic stats`), not only bytes saved: a frequently recovered category is budgeted too tightly.
+
 Never pretend a truncated result was exhaustive. Never invent omitted content. Redact secrets before storing logs, and follow local retention rules. **Do not merely summarize a large tool response in your final answer:** by then, the model has already paid to receive the large result.
 
 ### Examples of narrow requests
