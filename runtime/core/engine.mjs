@@ -300,13 +300,15 @@ export async function optimizeText({ harness='unknown', name='', args={}, text, 
     const recover = `Recover: laconic_read_result id=${recoveryId} query="<text>" (matches with context) or from=N count=100; CLI: laconic show ${recoveryId} --query TEXT]`;
     const makeFooter = (displayed, note = '') =>
       `\n[Laconic: partial ${category} output (${displayed}/${totalLines} lines shown, ${originalBytes} bytes).${status}${note} ${recover}`;
-    const reserve = bytes(makeFooter(totalLines, ' Diagnostic groups shown: 999/999.'));
+    const reserve = bytes(makeFooter(totalLines, ' All 999 distinct failure lines shown above with context; other omitted lines repeat them or match no failure pattern.'));
     let built = category === 'search' ? buildSearchExcerpt(text, budget - reserve) : null;
     let note = '';
     if (built) note = built.lossless ? ' Search index is complete.' : ' Search file list is complete.';
     else {
       built = buildLogExcerpt(text, budget - reserve, settings);
-      if (built.groups) note = ` Diagnostic groups shown: ${built.shownGroups}/${built.groups}.`;
+      if (built.groups) note = built.shownGroups === built.groups
+        ? ` All ${built.groups} distinct failure line${built.groups === 1 ? '' : 's'} shown above with context; other omitted lines repeat them or match no failure pattern.`
+        : ` Diagnostic groups shown: ${built.shownGroups}/${built.groups}; recover the rest by query.`;
     }
     const { excerpt, displayed } = built;
     // If no complete evidence fits, preserve the original rather than a misleading stub.

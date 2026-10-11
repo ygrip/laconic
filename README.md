@@ -66,11 +66,12 @@ These small, single-task experiments do not establish general savings. Read the 
 
 ### Measured native runtime comparison
 
-The current engine was re-measured in **24 Pi sessions** (baseline, skill, runtime, both × review, noisy-log triage, short repair). **All 224/224 independent checks passed, and every review session found all 6 seeded defects.**
+The current engine and skill were measured in **36 Pi sessions** (baseline, skill, runtime, both × code review, noisy-log triage, short repair; three pairs). **All 336/336 independent checks passed, and every review session found all 6 seeded defects.**
 
-- **Review:** runtime used **50.2% fewer tokens** and **56.9% fewer tool bytes** with no recall loss and zero recovery calls.
-- **Noisy-log triage:** runtime used **65.0% fewer tokens** and **81.1% fewer bytes**, but took **37.3% longer**; the single query-based recovery per session was partly prompted by the task wording.
-- **Unfavorable:** the skill's new review-depth rule made skill-only reviews use **92.6% more tokens** and **55% more time**, without a measurable recall gain on this fixture.
+- **Review:** runtime used **66.3% fewer tokens**, **35.2% less time** and **46.6% lower estimated cost**, with no recall loss and zero recovery calls.
+- **Noisy-log triage:** runtime used **64.3% fewer tokens**; the v1 latency penalty dropped from +63.8% to +13.3% (both arms: +18.8% to −0.2%).
+- **Overall:** runtime **−61.0% tokens, −19.1% time, −37.2% estimated cost** versus baseline at identical correctness.
+- Skill alone is roughly cost-neutral on these tasks (+0.2% to +8.9% tokens), down from +23% in v1.
 
 Small synthetic samples; not provider-billing or production claims. See [results, method and limitations](docs/pi-e2e-runtime.md).
 

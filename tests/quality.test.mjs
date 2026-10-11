@@ -21,7 +21,7 @@ test('distinct failure groups survive a flood of one repeated failure',async()=>
   assert.match(result.content,/EACCES permission denied/);
   assert.match(result.content,/TypeError: cannot read/);
   assert.match(result.content,/src\/api\.ts:42/,'cause frame after the representative line is kept');
-  assert.match(result.content,/Diagnostic groups shown: 3\/3/);
+  assert.match(result.content,/All 3 distinct failure lines shown above/);
   assert.match(result.content,/3 failed, 97 passed/);
 });
 
